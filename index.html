@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wardrobe Outfit Picker</title>
+</head>
+<body>
+  <h1>Wardrobe Outfit Picker</h1>
+
+  <h2>Add Clothes</h2>
+
+  <input id="itemName" placeholder="Item name, e.g. Black T-shirt">
+
+  <select id="category">
+    <option value="shirt">Shirt</option>
+    <option value="pants">Pants</option>
+    <option value="shoes">Shoes</option>
+    <option value="socks">Socks</option>
+    <option value="hat">Hat</option>
+  </select>
+
+  <select id="color">
+    <option value="black">Black</option>
+    <option value="white">White</option>
+    <option value="blue">Blue</option>
+    <option value="brown">Brown</option>
+    <option value="beige">Beige</option>
+    <option value="gray">Gray</option>
+  </select>
+
+  <button onclick="addItem()">Add Item</button>
+
+  <h2>Your Wardrobe</h2>
+  <ul id="wardrobeList"></ul>
+
+  <h2>Generate Outfit</h2>
+  <button onclick="generateOutfit()">Pick Outfit</button>
+
+  <h2>Suggested Outfit</h2>
+  <p id="outfitResult">No outfit picked yet.</p>
+
+  <script>
+    let wardrobe = [];
+
+    function addItem() {
+      let name = document.getElementById("itemName").value;
+      let category = document.getElementById("category").value;
+      let color = document.getElementById("color").value;
+
+      if (name === "") {
+        alert("Please enter item name");
+        return;
+      }
+
+      let item = {
+        name: name,
+        category: category,
+        color: color
+      };
+
+      wardrobe.push(item);
+
+      document.getElementById("itemName").value = "";
+
+      showWardrobe();
+    }
+
+    function showWardrobe() {
+      let list = document.getElementById("wardrobeList");
+      list.innerHTML = "";
+
+      wardrobe.forEach(function(item) {
+        let listItem = document.createElement("li");
+        listItem.innerText = item.name + " - " + item.category + " - " + item.color;
+        list.appendChild(listItem);
+      });
+    }
+
+    function getRandomItem(category) {
+      let items = wardrobe.filter(function(item) {
+        return item.category === category;
+      });
+
+      if (items.length === 0) {
+        return null;
+      }
+
+      let randomIndex = Math.floor(Math.random() * items.length);
+      return items[randomIndex];
+    }
+
+    function generateOutfit() {
+      let shirt = getRandomItem("shirt");
+      let pants = getRandomItem("pants");
+      let shoes = getRandomItem("shoes");
+      let socks = getRandomItem("socks");
+      let hat = getRandomItem("hat");
+
+      if (!shirt || !pants || !shoes || !socks) {
+        document.getElementById("outfitResult").innerText =
+          "Please add at least 1 shirt, 1 pants, 1 shoes, and 1 socks.";
+        return;
+      }
+
+      let outfit = "Shirt: " + shirt.name +
+        "\nPants: " + pants.name +
+        "\nShoes: " + shoes.name +
+        "\nSocks: " + socks.name;
+
+      if (hat) {
+        outfit += "\nHat: " + hat.name;
+      }
+
+      document.getElementById("outfitResult").innerText = outfit;
+    }
+  </script>
+</body>
+</html>
