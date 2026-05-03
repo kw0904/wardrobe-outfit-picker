@@ -143,22 +143,6 @@
       color: #d1d5db;
     }
 
-    .score-box {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .score {
-      background: rgba(255,255,255,0.12);
-      color: white;
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-weight: bold;
-      font-size: 13px;
-    }
-
     .variation-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -184,6 +168,22 @@
     .variation-title {
       font-size: 18px;
       font-weight: bold;
+    }
+
+    .score-box {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .score {
+      background: #eef2ff;
+      color: #1e3a8a;
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-weight: bold;
+      font-size: 13px;
     }
 
     .outfit-grid {
@@ -418,7 +418,9 @@
         lowerName.includes("dress") ||
         color === "beige" ||
         color === "brown"
-      ) styles.push("elegant");
+      ) {
+        styles.push("elegant");
+      }
 
       if (
         lowerName.includes("oversized") ||
@@ -428,7 +430,9 @@
         lowerName.includes("chunky") ||
         lowerName.includes("bomber") ||
         color === "black"
-      ) styles.push("streetwear");
+      ) {
+        styles.push("streetwear");
+      }
 
       if (
         lowerName.includes("checkered") ||
@@ -437,7 +441,9 @@
         lowerName.includes("shirt") ||
         color === "blue" ||
         color === "gray"
-      ) styles.push("geeky");
+      ) {
+        styles.push("geeky");
+      }
 
       if (
         lowerName.includes("t-shirt") ||
@@ -446,9 +452,13 @@
         lowerName.includes("sneakers") ||
         lowerName.includes("shorts") ||
         category === "socks"
-      ) styles.push("casual");
+      ) {
+        styles.push("casual");
+      }
 
-      if (styles.length === 0) styles.push("casual");
+      if (styles.length === 0) {
+        styles.push("casual");
+      }
 
       return [...new Set(styles)];
     }
@@ -466,9 +476,11 @@
 
       if (photoInput.files && photoInput.files[0]) {
         let reader = new FileReader();
+
         reader.onload = function(event) {
           saveNewItem(name, category, color, event.target.result);
         };
+
         reader.readAsDataURL(photoInput.files[0]);
       } else {
         saveNewItem(name, category, color, "");
@@ -531,15 +543,18 @@
           let tag = document.createElement("span");
           tag.className = item.styles.includes(style) ? "tag active" : "tag";
           tag.innerText = style;
+
           tag.onclick = function() {
             toggleItemStyle(index, style);
           };
+
           tagRow.appendChild(tag);
         });
 
         let removeButton = document.createElement("button");
         removeButton.className = "danger";
         removeButton.innerText = "Remove";
+
         removeButton.onclick = function() {
           wardrobe.splice(index, 1);
           saveWardrobe();
@@ -583,8 +598,10 @@
       wardrobe = [];
       saveWardrobe();
       showWardrobe();
+
       currentVariations = [];
       renderVariations();
+
       document.getElementById("buyCards").innerHTML = "";
       document.getElementById("boardTitle").innerText = "No outfit picked yet";
       document.getElementById("boardSubtitle").innerText = "Add clothes, choose a style, then generate your look.";
@@ -603,29 +620,62 @@
     }
 
     function getStyleRecommendedColors(styleGoal) {
-      if (styleGoal === "elegant") return ["black", "white", "beige", "gray", "brown"];
-      if (styleGoal === "streetwear") return ["black", "white", "gray", "blue", "green"];
-      if (styleGoal === "geeky") return ["white", "blue", "brown", "gray", "beige"];
+      if (styleGoal === "elegant") {
+        return ["black", "white", "beige", "gray", "brown"];
+      }
+
+      if (styleGoal === "streetwear") {
+        return ["black", "white", "gray", "blue", "green"];
+      }
+
+      if (styleGoal === "geeky") {
+        return ["white", "blue", "brown", "gray", "beige"];
+      }
+
       return ["black", "white", "blue", "brown", "beige", "gray", "green", "red"];
     }
 
     function getOccasionPreferredCategories(occasion) {
-      if (occasion === "work") return ["shirt", "pants", "shoes", "outerwear"];
-      if (occasion === "date") return ["shirt", "pants", "shoes", "outerwear"];
-      if (occasion === "wedding") return ["shirt", "pants", "shoes", "outerwear"];
-      if (occasion === "travel") return ["shirt", "pants", "shoes", "hat"];
+      if (occasion === "work") {
+        return ["shirt", "pants", "shoes", "outerwear"];
+      }
+
+      if (occasion === "date") {
+        return ["shirt", "pants", "shoes", "outerwear"];
+      }
+
+      if (occasion === "wedding") {
+        return ["shirt", "pants", "shoes", "outerwear"];
+      }
+
+      if (occasion === "travel") {
+        return ["shirt", "pants", "shoes", "hat"];
+      }
+
       return ["shirt", "pants", "shoes"];
     }
 
     function getOccasionAvoidRules(occasion) {
-      if (occasion === "wedding") return ["sneakers", "hoodie", "cargo", "oversized"];
-      if (occasion === "work") return ["cargo", "oversized", "chunky"];
-      if (occasion === "date") return ["too casual"];
+      if (occasion === "wedding") {
+        return ["sneakers", "hoodie", "cargo", "oversized"];
+      }
+
+      if (occasion === "work") {
+        return ["cargo", "oversized", "chunky"];
+      }
+
+      if (occasion === "date") {
+        return ["too casual"];
+      }
+
       return [];
     }
 
     function itemHasAvoidKeyword(item, occasion) {
-      if (!item) return false;
+      if (!item) {
+        return false;
+      }
+
       let avoidWords = getOccasionAvoidRules(occasion);
       let lowerName = item.name.toLowerCase();
 
@@ -635,25 +685,41 @@
     }
 
     function scoreItem(item, styleGoal, occasion, personality) {
-      if (!item) return -999;
+      if (!item) {
+        return -999;
+      }
 
       let score = 0;
       let recommendedColors = getStyleRecommendedColors(styleGoal);
 
-      if (item.styles.includes(styleGoal)) score += 50;
-      if (recommendedColors.includes(item.color)) score += 25;
-      if (itemHasAvoidKeyword(item, occasion)) score -= 35;
+      if (item.styles.includes(styleGoal)) {
+        score += 50;
+      }
+
+      if (recommendedColors.includes(item.color)) {
+        score += 25;
+      }
+
+      if (itemHasAvoidKeyword(item, occasion)) {
+        score -= 35;
+      }
 
       if (personality === "safe") {
-        if (["black", "white", "beige", "gray", "brown"].includes(item.color)) score += 15;
+        if (["black", "white", "beige", "gray", "brown"].includes(item.color)) {
+          score += 15;
+        }
       }
 
       if (personality === "stylish") {
-        if (item.styles.includes(styleGoal)) score += 20;
+        if (item.styles.includes(styleGoal)) {
+          score += 20;
+        }
       }
 
       if (personality === "bold") {
-        if (["black", "green", "red", "blue"].includes(item.color)) score += 12;
+        if (["black", "green", "red", "blue"].includes(item.color)) {
+          score += 12;
+        }
       }
 
       score += Math.floor(Math.random() * 15);
@@ -666,7 +732,9 @@
         return !usedIds.includes(item.id);
       });
 
-      if (items.length === 0) return null;
+      if (items.length === 0) {
+        return null;
+      }
 
       let sorted = shuffle(items).sort(function(a, b) {
         return scoreItem(b, styleGoal, occasion, personality) - scoreItem(a, styleGoal, occasion, personality);
@@ -710,15 +778,6 @@
       return suggestions[styleGoal][category] || "Versatile basic item";
     }
 
-    function getFromScratchOutfit(styleGoal) {
-      return {
-        shirt: fakeItem(getBuySuggestion(styleGoal, "shirt"), "shirt", styleGoal),
-        pants: fakeItem(getBuySuggestion(styleGoal, "pants"), "pants", styleGoal),
-        shoes: fakeItem(getBuySuggestion(styleGoal, "shoes"), "shoes", styleGoal),
-        outerwear: fakeItem(getBuySuggestion(styleGoal, "outerwear"), "outerwear", styleGoal)
-      };
-    }
-
     function fakeItem(name, category, styleGoal) {
       return {
         id: "buy-" + category + "-" + Date.now() + Math.random(),
@@ -730,12 +789,34 @@
       };
     }
 
+    function getFromScratchOutfit(styleGoal) {
+      return {
+        shirt: fakeItem(getBuySuggestion(styleGoal, "shirt"), "shirt", styleGoal),
+        pants: fakeItem(getBuySuggestion(styleGoal, "pants"), "pants", styleGoal),
+        shoes: fakeItem(getBuySuggestion(styleGoal, "shoes"), "shoes", styleGoal),
+        outerwear: fakeItem(getBuySuggestion(styleGoal, "outerwear"), "outerwear", styleGoal)
+      };
+    }
+
     function evaluateItem(item, styleGoal) {
-      if (!item) return false;
+      if (!item) {
+        return false;
+      }
+
       let recommendedColors = getStyleRecommendedColors(styleGoal);
-      if (item.styles && item.styles.includes(styleGoal)) return true;
-      if (recommendedColors.includes(item.color)) return true;
-      if (item.color === "recommended") return true;
+
+      if (item.styles && item.styles.includes(styleGoal)) {
+        return true;
+      }
+
+      if (recommendedColors.includes(item.color)) {
+        return true;
+      }
+
+      if (item.color === "recommended") {
+        return true;
+      }
+
       return false;
     }
 
@@ -743,7 +824,12 @@
       let itemList = Object.values(items).filter(Boolean);
 
       if (itemList.length === 0) {
-        return { styleScore: 0, colorScore: 0, completenessScore: 0, totalScore: 0 };
+        return {
+          styleScore: 0,
+          colorScore: 0,
+          completenessScore: 0,
+          totalScore: 0
+        };
       }
 
       let styleMatches = itemList.filter(function(item) {
@@ -757,6 +843,7 @@
       }).length;
 
       let neededCategories = getOccasionPreferredCategories(occasion);
+
       let availableCategories = itemList.map(function(item) {
         return item.category;
       });
@@ -806,31 +893,73 @@
       }
 
       let usedIds = [];
+
       let shirt = pickBestItem("shirt", styleGoal, occasion, personality, usedIds);
-      if (shirt) usedIds.push(shirt.id);
+      if (shirt) {
+        usedIds.push(shirt.id);
+      }
 
       let pants = pickBestItem("pants", styleGoal, occasion, personality, usedIds);
-      if (pants) usedIds.push(pants.id);
+      if (pants) {
+        usedIds.push(pants.id);
+      }
 
       let shoes = pickBestItem("shoes", styleGoal, occasion, personality, usedIds);
-      if (shoes) usedIds.push(shoes.id);
+      if (shoes) {
+        usedIds.push(shoes.id);
+      }
 
       let outerwear = pickBestItem("outerwear", styleGoal, occasion, personality, usedIds);
+      if (outerwear) {
+        usedIds.push(outerwear.id);
+      }
+
       let hat = pickBestItem("hat", styleGoal, occasion, personality, usedIds);
+      if (hat) {
+        usedIds.push(hat.id);
+      }
+
       let socks = pickBestItem("socks", styleGoal, occasion, personality, usedIds);
 
-      let items = { shirt, pants, shoes, outerwear, hat, socks };
+      let items = {
+        shirt: shirt,
+        pants: pants,
+        shoes: shoes,
+        outerwear: outerwear,
+        hat: hat,
+        socks: socks
+      };
+
       let buySuggestions = [];
 
-      if (!shirt) buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
-      if (!pants) buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
-      if (!shoes) buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
+      if (!shirt) {
+        buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
+      }
+
+      if (!pants) {
+        buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
+      }
+
+      if (!shoes) {
+        buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
+      }
 
       if (strictness === "completeLook") {
-        if (shirt && !evaluateItem(shirt, styleGoal)) buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
-        if (pants && !evaluateItem(pants, styleGoal)) buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
-        if (shoes && !evaluateItem(shoes, styleGoal)) buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
-        if (!outerwear && styleGoal !== "casual") buySuggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
+        if (shirt && !evaluateItem(shirt, styleGoal)) {
+          buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
+        }
+
+        if (pants && !evaluateItem(pants, styleGoal)) {
+          buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
+        }
+
+        if (shoes && !evaluateItem(shoes, styleGoal)) {
+          buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
+        }
+
+        if (!outerwear && styleGoal !== "casual") {
+          buySuggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
+        }
       }
 
       if (strictness === "wardrobeOnly") {
@@ -851,9 +980,17 @@
     function buildExplanation(personality, items, buySuggestions, scores, styleGoal, occasion, strictness) {
       let text = "";
 
-      if (personality === "safe") text += "Safe option: this prioritizes neutral, easy-to-wear pieces.\n\n";
-      if (personality === "stylish") text += "Stylish option: this prioritizes stronger style match.\n\n";
-      if (personality === "bold") text += "Bolder option: this allows slightly more expressive choices.\n\n";
+      if (personality === "safe") {
+        text += "Safe option: this prioritizes neutral, easy-to-wear pieces.\n\n";
+      }
+
+      if (personality === "stylish") {
+        text += "Stylish option: this prioritizes stronger style match.\n\n";
+      }
+
+      if (personality === "bold") {
+        text += "Bolder option: this allows slightly more expressive choices.\n\n";
+      }
 
       text += "Score: " + scores.totalScore + "% total, " + scores.styleScore + "% style, " + scores.colorScore + "% color, " + scores.completenessScore + "% completeness.\n\n";
 
@@ -867,6 +1004,7 @@
         text += "\nWardrobe-only mode is active, so the app will not suggest items to buy.";
       } else if (buySuggestions.length > 0) {
         text += "\nTo improve this look, consider adding:\n";
+
         buySuggestions.forEach(function(suggestion) {
           text += "- " + suggestion + "\n";
         });
@@ -900,6 +1038,7 @@
     function regenerateVariation(index) {
       let personality = currentVariations[index].personality;
       currentVariations[index] = generateOneVariation(personality);
+
       renderVariations();
       renderCombinedBuySuggestions();
     }
@@ -929,24 +1068,36 @@
         let regenButton = document.createElement("button");
         regenButton.className = "secondary";
         regenButton.innerText = "Regenerate";
+
         regenButton.onclick = function() {
           regenerateVariation(index);
         };
 
         let saveButton = document.createElement("button");
         saveButton.innerText = "Save Look";
+
         saveButton.onclick = function() {
           saveLook(index);
         };
 
+        let promptButton = document.createElement("button");
+        promptButton.className = "secondary";
+        promptButton.innerText = "Generate Model Prompt";
+
+        promptButton.onclick = function() {
+          generateModelPrompt(index);
+        };
+
         actions.appendChild(regenButton);
         actions.appendChild(saveButton);
+        actions.appendChild(promptButton);
 
         header.appendChild(title);
         header.appendChild(actions);
 
         let scoreBox = document.createElement("div");
         scoreBox.className = "score-box";
+
         scoreBox.innerHTML =
           '<span class="score">Style: ' + variation.scores.styleScore + '%</span>' +
           '<span class="score">Color: ' + variation.scores.colorScore + '%</span>' +
@@ -957,7 +1108,10 @@
 
         Object.keys(variation.items).forEach(function(key) {
           let item = variation.items[key];
-          if (item) outfitGrid.appendChild(createOutfitCard(item, capitalize(key)));
+
+          if (item) {
+            outfitGrid.appendChild(createOutfitCard(item, capitalize(key)));
+          }
         });
 
         let explanation = document.createElement("p");
@@ -1044,6 +1198,7 @@
 
         let button = document.createElement("button");
         button.innerText = "View options";
+
         button.onclick = function() {
           alert("Later this can open affiliate or sponsored product options.");
         };
@@ -1054,6 +1209,31 @@
 
         container.appendChild(card);
       });
+    }
+
+    function generateModelPrompt(index) {
+      let variation = currentVariations[index];
+      let styleGoal = document.getElementById("styleGoal").value;
+      let occasion = document.getElementById("occasion").value;
+
+      let items = [];
+
+      Object.keys(variation.items).forEach(function(key) {
+        let item = variation.items[key];
+
+        if (item) {
+          items.push(item.name);
+        }
+      });
+
+      let prompt =
+        "Create a full-body fashion illustration of a clean cartoon model wearing: " +
+        items.join(", ") +
+        ". The outfit should look " + styleGoal +
+        " and suitable for " + occasion +
+        ". Use a neutral studio background, realistic outfit proportions, clean lighting, and make the clothes clearly visible.";
+
+      alert(prompt);
     }
 
     function saveLook(index) {
@@ -1069,6 +1249,7 @@
       savedLooks.push(saved);
       saveSavedLooks();
       showSavedLooks();
+
       alert("Look saved.");
     }
 
@@ -1091,7 +1272,10 @@
 
         Object.keys(look.items).forEach(function(key) {
           let item = look.items[key];
-          if (item) text += capitalize(key) + ": " + item.name + "\n";
+
+          if (item) {
+            text += capitalize(key) + ": " + item.name + "\n";
+          }
         });
 
         let pre = document.createElement("div");
@@ -1101,6 +1285,7 @@
         let removeButton = document.createElement("button");
         removeButton.className = "danger";
         removeButton.innerText = "Remove";
+
         removeButton.onclick = function() {
           savedLooks.splice(index, 1);
           saveSavedLooks();
