@@ -131,49 +131,64 @@
     }
 
     function generateOutfit() {
-      let styleGoal = document.getElementById("styleGoal").value;
+  let styleGoal = document.getElementById("styleGoal").value;
 
-      let shirt = getBestItem("shirt", styleGoal);
-      let pants = getBestItem("pants", styleGoal);
-      let shoes = getBestItem("shoes", styleGoal);
-      let socks = getBestItem("socks", styleGoal);
-      let hat = getBestItem("hat", styleGoal);
+  let shirt = getBestItem("shirt", styleGoal);
+  let pants = getBestItem("pants", styleGoal);
+  let shoes = getBestItem("shoes", styleGoal);
 
-      if (!shirt || !pants || !shoes) {
-        document.getElementById("outfitResult").innerText =
-          "Please add at least 1 shirt, 1 pants, and 1 shoes.";
-        return;
-      }
+  let result = "Style goal: " + styleGoal + "\n\n";
 
-      let result = "Style goal: " + styleGoal + "\n\n";
+  // 🚨 Case 1: Missing core items
+  if (!shirt || !pants || !shoes) {
+    result += "Your wardrobe is incomplete.\n";
 
-      result += "Wear this from your wardrobe:\n";
-      result += "Shirt: " + shirt.name + "\n";
-      result += "Pants: " + pants.name + "\n";
-      result += "Shoes: " + shoes.name + "\n";
+    if (!shirt) result += "- Missing: Shirt\n";
+    if (!pants) result += "- Missing: Pants\n";
+    if (!shoes) result += "- Missing: Shoes\n";
 
-      if (socks) {
-        result += "Socks: " + socks.name + "\n";
-      }
+    result += "\nAdd these to start building outfits.";
 
-      if (hat) {
-        result += "Hat: " + hat.name + "\n";
-      }
+    document.getElementById("outfitResult").innerText = result;
+    return;
+  }
 
-      result += "\nWhy this works:\n";
+  // ✅ Case 2: Can generate outfit
+  result += "Wear this from your wardrobe:\n";
+  result += "Shirt: " + shirt.name + "\n";
+  result += "Pants: " + pants.name + "\n";
+  result += "Shoes: " + shoes.name + "\n";
 
-      if (styleGoal === "elegant") {
-        result += "Elegant style usually works best with neutral colors like black, white, beige, gray, or brown.";
-      } else if (styleGoal === "streetwear") {
-        result += "Streetwear usually works well with black, white, gray, blue, and stronger casual pieces.";
-      } else if (styleGoal === "geeky") {
-        result += "Geeky style usually works well with clean, simple colors and slightly classic combinations.";
-      } else {
-        result += "Casual style is flexible, so this outfit is picked based on what you already own.";
-      }
+  // 🎯 Style color logic
+  let recommendedColors = getStyleRecommendedColors(styleGoal);
 
-      document.getElementById("outfitResult").innerText = result;
-    }
+  let missingSuggestions = [];
+
+  if (!recommendedColors.includes(shirt.color)) {
+    missingSuggestions.push("a " + styleGoal + " shirt in neutral colors (black, white, beige)");
+  }
+
+  if (!recommendedColors.includes(pants.color)) {
+    missingSuggestions.push("pants in more suitable colors for " + styleGoal + " style");
+  }
+
+  if (!recommendedColors.includes(shoes.color)) {
+    missingSuggestions.push("shoes that better match " + styleGoal + " style");
+  }
+
+  // 🧠 Case 3: Suggest improvement
+  if (missingSuggestions.length > 0) {
+    result += "\n\nTo better match this style, consider adding:\n";
+
+    missingSuggestions.forEach(function(suggestion) {
+      result += "- " + suggestion + "\n";
+    });
+  } else {
+    result += "\n\nYour current wardrobe already fits this style well.";
+  }
+
+  document.getElementById("outfitResult").innerText = result;
+}
   </script>
 </body>
 </html>
