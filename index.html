@@ -7,9 +7,8 @@
     body {
       font-family: Arial, sans-serif;
       background: #f5f5f5;
-      color: #222;
-      max-width: 900px;
-      margin: 0 auto;
+      color: #111111;
+      margin: 0;
       padding: 32px;
     }
 
@@ -18,42 +17,65 @@
     }
 
     p {
-      color: #555;
+      color: #666666;
+    }
+
+    .container {
+      display: flex;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .left, .right {
+      width: 50%;
+    }
+
+    .right {
+      position: sticky;
+      top: 24px;
+      height: fit-content;
     }
 
     .section {
-      background: white;
+      background: #ffffff;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 16px;
       margin-top: 20px;
-      border: 1px solid #ddd;
+      border: 1px solid #e5e5e5;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
 
     input, select, button {
-      padding: 10px;
+      padding: 12px;
       margin: 6px 4px 6px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      border-radius: 10px;
+      border: 1px solid #cccccc;
       font-size: 14px;
+    }
+
+    input {
+      width: 220px;
     }
 
     button {
       cursor: pointer;
-      background: #222;
+      background: #1e3a8a;
       color: white;
       border: none;
+      font-weight: bold;
     }
 
     button:hover {
-      background: #444;
+      background: #172f70;
     }
 
     .danger {
-      background: #8b0000;
+      background: #7a1e2c;
     }
 
     .danger:hover {
-      background: #a00000;
+      background: #631724;
     }
 
     ul {
@@ -65,8 +87,8 @@
       background: #f9f9f9;
       margin: 8px 0;
       padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #eee;
+      border-radius: 10px;
+      border: 1px solid #eeeeee;
     }
 
     pre {
@@ -75,79 +97,98 @@
       border-radius: 12px;
       white-space: pre-wrap;
       line-height: 1.5;
-      border: 1px solid #eee;
+      border: 1px solid #eeeeee;
       font-family: Arial, sans-serif;
+      min-height: 300px;
     }
 
-    .app-header {
-      margin-bottom: 24px;
+    .tag {
+      color: #1e3a8a;
+      font-weight: bold;
+    }
+
+    @media (max-width: 800px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left, .right {
+        width: 100%;
+      }
+
+      .right {
+        position: static;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="app-header">
-    <h1>Wardrobe Outfit Picker</h1>
-    <p>Pick what to wear from your wardrobe, then see what item could improve the look.</p>
-  </div>
+  <div class="container">
 
-  <div class="section">
-    <h2>Add Clothes</h2>
+    <div class="left">
+      <div>
+        <h1>Wardrobe Outfit Picker</h1>
+        <p>Build outfits from your wardrobe, then see what item could improve your look.</p>
+      </div>
 
-    <input id="itemName" placeholder="Item name, e.g. Black T-shirt">
+      <div class="section">
+        <h2>Add Clothes</h2>
 
-    <select id="category">
-      <option value="shirt">Shirt</option>
-      <option value="pants">Pants</option>
-      <option value="shoes">Shoes</option>
-      <option value="socks">Socks</option>
-      <option value="hat">Hat</option>
-      <option value="outerwear">Outerwear</option>
-    </select>
+        <input id="itemName" placeholder="e.g. Black Oxford Shirt">
 
-    <select id="color">
-      <option value="black">Black</option>
-      <option value="white">White</option>
-      <option value="blue">Blue</option>
-      <option value="brown">Brown</option>
-      <option value="beige">Beige</option>
-      <option value="gray">Gray</option>
-      <option value="green">Green</option>
-      <option value="red">Red</option>
-    </select>
+        <select id="category">
+          <option value="shirt">Shirt</option>
+          <option value="pants">Pants</option>
+          <option value="shoes">Shoes</option>
+          <option value="socks">Socks</option>
+          <option value="hat">Hat</option>
+          <option value="outerwear">Outerwear</option>
+        </select>
 
-    <select id="itemStyle">
-      <option value="casual">Casual</option>
-      <option value="elegant">Elegant</option>
-      <option value="streetwear">Streetwear</option>
-      <option value="geeky">Geeky</option>
-    </select>
+        <select id="color">
+          <option value="black">Black</option>
+          <option value="white">White</option>
+          <option value="blue">Blue</option>
+          <option value="brown">Brown</option>
+          <option value="beige">Beige</option>
+          <option value="gray">Gray</option>
+          <option value="green">Green</option>
+          <option value="red">Red</option>
+        </select>
 
-    <button onclick="addItem()">Add Item</button>
-  </div>
+        <button onclick="addItem()">Add Item</button>
 
-  <div class="section">
-    <h2>Your Wardrobe</h2>
-    <button class="danger" onclick="clearWardrobe()">Clear Wardrobe</button>
-    <ul id="wardrobeList"></ul>
-  </div>
+        <p>The app will auto-detect possible styles based on item name, category, and color.</p>
+      </div>
 
-  <div class="section">
-    <h2>Choose Style Goal</h2>
+      <div class="section">
+        <h2>Your Wardrobe</h2>
+        <button class="danger" onclick="clearWardrobe()">Clear Wardrobe</button>
+        <ul id="wardrobeList"></ul>
+      </div>
 
-    <select id="styleGoal">
-      <option value="casual">Casual</option>
-      <option value="elegant">Elegant</option>
-      <option value="streetwear">Streetwear</option>
-      <option value="geeky">Geeky</option>
-    </select>
+      <div class="section">
+        <h2>Choose Style Goal</h2>
 
-    <button onclick="generateOutfit()">Pick Outfit</button>
-  </div>
+        <select id="styleGoal">
+          <option value="casual">Casual</option>
+          <option value="elegant">Elegant</option>
+          <option value="streetwear">Streetwear</option>
+          <option value="geeky">Geeky</option>
+        </select>
 
-  <div class="section">
-    <h2>Suggested Outfit</h2>
-    <pre id="outfitResult">No outfit picked yet.</pre>
+        <button onclick="generateOutfit()">Pick Outfit</button>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="section">
+        <h2>Suggested Outfit</h2>
+        <pre id="outfitResult">No outfit picked yet.</pre>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -159,11 +200,65 @@
       localStorage.setItem("wardrobe", JSON.stringify(wardrobe));
     }
 
+    function detectStyles(name, category, color) {
+      let lowerName = name.toLowerCase();
+      let styles = [];
+
+      if (
+        lowerName.includes("oxford") ||
+        lowerName.includes("blazer") ||
+        lowerName.includes("loafers") ||
+        lowerName.includes("tailored") ||
+        lowerName.includes("chino") ||
+        color === "beige" ||
+        color === "brown"
+      ) {
+        styles.push("elegant");
+      }
+
+      if (
+        lowerName.includes("oversized") ||
+        lowerName.includes("cargo") ||
+        lowerName.includes("hoodie") ||
+        lowerName.includes("sneakers") ||
+        lowerName.includes("chunky") ||
+        color === "black"
+      ) {
+        styles.push("streetwear");
+      }
+
+      if (
+        lowerName.includes("checkered") ||
+        lowerName.includes("cardigan") ||
+        lowerName.includes("polo") ||
+        lowerName.includes("shirt") ||
+        color === "blue" ||
+        color === "gray"
+      ) {
+        styles.push("geeky");
+      }
+
+      if (
+        lowerName.includes("t-shirt") ||
+        lowerName.includes("tee") ||
+        lowerName.includes("jeans") ||
+        lowerName.includes("sneakers") ||
+        category === "socks"
+      ) {
+        styles.push("casual");
+      }
+
+      if (styles.length === 0) {
+        styles.push("casual");
+      }
+
+      return [...new Set(styles)];
+    }
+
     function addItem() {
       let name = document.getElementById("itemName").value;
       let category = document.getElementById("category").value;
       let color = document.getElementById("color").value;
-      let style = document.getElementById("itemStyle").value;
 
       if (name === "") {
         alert("Please enter item name");
@@ -174,7 +269,7 @@
         name: name,
         category: category,
         color: color,
-        style: style
+        styles: detectStyles(name, category, color)
       };
 
       wardrobe.push(item);
@@ -197,8 +292,10 @@
 
       wardrobe.forEach(function(item, index) {
         let listItem = document.createElement("li");
+
         listItem.innerText =
-          item.name + " - " + item.category + " - " + item.color + " - " + item.style;
+          item.name + " - " + item.category + " - " + item.color +
+          " - styles: " + item.styles.join(", ");
 
         let removeButton = document.createElement("button");
         removeButton.innerText = "Remove";
@@ -228,36 +325,9 @@
     }
 
     function getRandomItemFromList(items) {
-      if (items.length === 0) {
-        return null;
-      }
-
+      if (items.length === 0) return null;
       let randomIndex = Math.floor(Math.random() * items.length);
       return items[randomIndex];
-    }
-
-    function getBestItem(category, styleGoal) {
-      let items = getItemsByCategory(category);
-
-      let matchingStyleItems = items.filter(function(item) {
-        return item.style === styleGoal;
-      });
-
-      if (matchingStyleItems.length > 0) {
-        return getRandomItemFromList(matchingStyleItems);
-      }
-
-      let recommendedColors = getStyleRecommendedColors(styleGoal);
-
-      let matchingColorItems = items.filter(function(item) {
-        return recommendedColors.includes(item.color);
-      });
-
-      if (matchingColorItems.length > 0) {
-        return getRandomItemFromList(matchingColorItems);
-      }
-
-      return getRandomItemFromList(items);
     }
 
     function getStyleRecommendedColors(styleGoal) {
@@ -276,7 +346,31 @@
       return ["black", "white", "blue", "brown", "beige", "gray", "green", "red"];
     }
 
-    function getBuySuggestion(styleGoal, missingCategory) {
+    function getBestItem(category, styleGoal) {
+      let items = getItemsByCategory(category);
+
+      let styleMatches = items.filter(function(item) {
+        return item.styles.includes(styleGoal);
+      });
+
+      if (styleMatches.length > 0) {
+        return getRandomItemFromList(styleMatches);
+      }
+
+      let recommendedColors = getStyleRecommendedColors(styleGoal);
+
+      let colorMatches = items.filter(function(item) {
+        return recommendedColors.includes(item.color);
+      });
+
+      if (colorMatches.length > 0) {
+        return getRandomItemFromList(colorMatches);
+      }
+
+      return getRandomItemFromList(items);
+    }
+
+    function getBuySuggestion(styleGoal, category) {
       let suggestions = {
         elegant: {
           shirt: "White oxford shirt",
@@ -304,7 +398,7 @@
         }
       };
 
-      return suggestions[styleGoal][missingCategory];
+      return suggestions[styleGoal][category];
     }
 
     function evaluateItem(item, styleGoal) {
@@ -312,13 +406,8 @@
 
       let recommendedColors = getStyleRecommendedColors(styleGoal);
 
-      if (item.style === styleGoal) {
-        return true;
-      }
-
-      if (recommendedColors.includes(item.color)) {
-        return true;
-      }
+      if (item.styles.includes(styleGoal)) return true;
+      if (recommendedColors.includes(item.color)) return true;
 
       return false;
     }
@@ -337,14 +426,13 @@
 
       if (!shirt || !pants || !shoes) {
         result += "Your wardrobe is incomplete.\n\n";
-
         result += "Missing core items:\n";
+
         if (!shirt) result += "- Shirt. Suggested buy: " + getBuySuggestion(styleGoal, "shirt") + "\n";
         if (!pants) result += "- Pants. Suggested buy: " + getBuySuggestion(styleGoal, "pants") + "\n";
         if (!shoes) result += "- Shoes. Suggested buy: " + getBuySuggestion(styleGoal, "shoes") + "\n";
 
         result += "\nAdd these first before the app can build a proper outfit.";
-
         document.getElementById("outfitResult").innerText = result;
         return;
       }
@@ -358,49 +446,47 @@
       if (hat) result += "- Hat: " + hat.name + "\n";
       if (outerwear) result += "- Outerwear: " + outerwear.name + "\n";
 
-      let improvementSuggestions = [];
+      let suggestions = [];
 
       if (!evaluateItem(shirt, styleGoal)) {
-        improvementSuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
+        suggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
       }
 
       if (!evaluateItem(pants, styleGoal)) {
-        improvementSuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
+        suggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
       }
 
       if (!evaluateItem(shoes, styleGoal)) {
-        improvementSuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
+        suggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
       }
 
       if (!outerwear && styleGoal !== "casual") {
-        improvementSuggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
+        suggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
       }
 
       result += "\nComplete this look:\n";
 
-      if (improvementSuggestions.length === 0) {
+      if (suggestions.length === 0) {
         result += "Your wardrobe already supports this style well.";
       } else {
-        improvementSuggestions.forEach(function(suggestion) {
+        suggestions.forEach(function(suggestion) {
           result += "- Consider adding " + suggestion + "\n";
         });
       }
 
       result += "\nStyle diagnosis:\n";
 
-      let styleMatchCount = 0;
+      let score = 0;
       [shirt, pants, shoes, outerwear].forEach(function(item) {
-        if (evaluateItem(item, styleGoal)) {
-          styleMatchCount++;
-        }
+        if (evaluateItem(item, styleGoal)) score++;
       });
 
-      if (styleMatchCount >= 3) {
-        result += "Strong fit. Your wardrobe already has enough items for this style.";
-      } else if (styleMatchCount === 2) {
+      if (score >= 3) {
+        result += "Strong fit. Your wardrobe already has enough pieces for this style.";
+      } else if (score === 2) {
         result += "Medium fit. You can create the style, but 1-2 better pieces would improve it.";
       } else {
-        result += "Weak fit. Your wardrobe does not strongly support this style yet, so buying a few foundation pieces would help.";
+        result += "Weak fit. Your wardrobe does not strongly support this style yet.";
       }
 
       document.getElementById("outfitResult").innerText = result;
