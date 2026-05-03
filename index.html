@@ -412,85 +412,100 @@
       return false;
     }
 
-    function generateOutfit() {
-      let styleGoal = document.getElementById("styleGoal").value;
+function generateOutfit() {
+  let styleGoal = document.getElementById("styleGoal").value;
 
-      let shirt = getBestItem("shirt", styleGoal);
-      let pants = getBestItem("pants", styleGoal);
-      let shoes = getBestItem("shoes", styleGoal);
-      let socks = getBestItem("socks", styleGoal);
-      let hat = getBestItem("hat", styleGoal);
-      let outerwear = getBestItem("outerwear", styleGoal);
+  let shirt = getBestItem("shirt", styleGoal);
+  let pants = getBestItem("pants", styleGoal);
+  let shoes = getBestItem("shoes", styleGoal);
+  let socks = getBestItem("socks", styleGoal);
+  let hat = getBestItem("hat", styleGoal);
+  let outerwear = getBestItem("outerwear", styleGoal);
 
-      let result = "Style goal: " + styleGoal + "\n\n";
+  let result = "Style goal: " + styleGoal + "\n\n";
 
-      if (!shirt || !pants || !shoes) {
-        result += "Your wardrobe is incomplete.\n\n";
-        result += "Missing core items:\n";
+  let ownedItems = [];
+  if (shirt) ownedItems.push("Shirt: " + shirt.name);
+  if (pants) ownedItems.push("Pants: " + pants.name);
+  if (shoes) ownedItems.push("Shoes: " + shoes.name);
 
-        if (!shirt) result += "- Shirt. Suggested buy: " + getBuySuggestion(styleGoal, "shirt") + "\n";
-        if (!pants) result += "- Pants. Suggested buy: " + getBuySuggestion(styleGoal, "pants") + "\n";
-        if (!shoes) result += "- Shoes. Suggested buy: " + getBuySuggestion(styleGoal, "shoes") + "\n";
+  if (!shirt || !pants || !shoes) {
+    result += "I found these usable items from your wardrobe:\n";
 
-        result += "\nAdd these first before the app can build a proper outfit.";
-        document.getElementById("outfitResult").innerText = result;
-        return;
-      }
-
-      result += "Wear this from your wardrobe:\n";
-      result += "- Shirt: " + shirt.name + "\n";
-      result += "- Pants: " + pants.name + "\n";
-      result += "- Shoes: " + shoes.name + "\n";
-
-      if (socks) result += "- Socks: " + socks.name + "\n";
-      if (hat) result += "- Hat: " + hat.name + "\n";
-      if (outerwear) result += "- Outerwear: " + outerwear.name + "\n";
-
-      let suggestions = [];
-
-      if (!evaluateItem(shirt, styleGoal)) {
-        suggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
-      }
-
-      if (!evaluateItem(pants, styleGoal)) {
-        suggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
-      }
-
-      if (!evaluateItem(shoes, styleGoal)) {
-        suggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
-      }
-
-      if (!outerwear && styleGoal !== "casual") {
-        suggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
-      }
-
-      result += "\nComplete this look:\n";
-
-      if (suggestions.length === 0) {
-        result += "Your wardrobe already supports this style well.";
-      } else {
-        suggestions.forEach(function(suggestion) {
-          result += "- Consider adding " + suggestion + "\n";
-        });
-      }
-
-      result += "\nStyle diagnosis:\n";
-
-      let score = 0;
-      [shirt, pants, shoes, outerwear].forEach(function(item) {
-        if (evaluateItem(item, styleGoal)) score++;
+    if (ownedItems.length > 0) {
+      ownedItems.forEach(function(item) {
+        result += "- " + item + "\n";
       });
-
-      if (score >= 3) {
-        result += "Strong fit. Your wardrobe already has enough pieces for this style.";
-      } else if (score === 2) {
-        result += "Medium fit. You can create the style, but 1-2 better pieces would improve it.";
-      } else {
-        result += "Weak fit. Your wardrobe does not strongly support this style yet.";
-      }
-
-      document.getElementById("outfitResult").innerText = result;
+    } else {
+      result += "- No core outfit items yet.\n";
     }
+
+    result += "\nTo build a complete " + styleGoal + " outfit, you may still need:\n";
+
+    if (!shirt) result += "- A shirt, for example: " + getBuySuggestion(styleGoal, "shirt") + "\n";
+    if (!pants) result += "- Pants, for example: " + getBuySuggestion(styleGoal, "pants") + "\n";
+    if (!shoes) result += "- Shoes, for example: " + getBuySuggestion(styleGoal, "shoes") + "\n";
+
+    result += "\nThese are starting suggestions, not strict requirements. Add more wardrobe items and the recommendation will become more personalized.";
+
+    document.getElementById("outfitResult").innerText = result;
+    return;
+  }
+
+  result += "Wear this from your wardrobe:\n";
+  result += "- Shirt: " + shirt.name + "\n";
+  result += "- Pants: " + pants.name + "\n";
+  result += "- Shoes: " + shoes.name + "\n";
+
+  if (socks) result += "- Socks: " + socks.name + "\n";
+  if (hat) result += "- Hat: " + hat.name + "\n";
+  if (outerwear) result += "- Outerwear: " + outerwear.name + "\n";
+
+  let suggestions = [];
+
+  if (!evaluateItem(shirt, styleGoal)) {
+    suggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
+  }
+
+  if (!evaluateItem(pants, styleGoal)) {
+    suggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
+  }
+
+  if (!evaluateItem(shoes, styleGoal)) {
+    suggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
+  }
+
+  if (!outerwear && styleGoal !== "casual") {
+    suggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
+  }
+
+  result += "\nComplete this look:\n";
+
+  if (suggestions.length === 0) {
+    result += "Your wardrobe already supports this style well.";
+  } else {
+    suggestions.forEach(function(suggestion) {
+      result += "- Consider adding " + suggestion + "\n";
+    });
+  }
+
+  result += "\nStyle diagnosis:\n";
+
+  let score = 0;
+  [shirt, pants, shoes, outerwear].forEach(function(item) {
+    if (evaluateItem(item, styleGoal)) score++;
+  });
+
+  if (score >= 3) {
+    result += "Strong fit. Your wardrobe already has enough pieces for this style.";
+  } else if (score === 2) {
+    result += "Medium fit. You can create the style, but 1-2 better pieces would improve it.";
+  } else {
+    result += "Weak fit. Your wardrobe does not strongly support this style yet.";
+  }
+
+  document.getElementById("outfitResult").innerText = result;
+}
   </script>
 </body>
 </html>
