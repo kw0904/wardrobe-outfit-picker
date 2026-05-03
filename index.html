@@ -9,25 +9,22 @@
       background: #f3f4f6;
       color: #111;
       margin: 0;
-      padding: 32px;
+      padding: 28px;
     }
 
     .container {
       display: flex;
       gap: 24px;
-      max-width: 1280px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
     .left {
-      width: 40%;
+      width: 38%;
     }
 
     .right {
-      width: 60%;
-      position: sticky;
-      top: 24px;
-      height: fit-content;
+      width: 62%;
     }
 
     .section {
@@ -52,7 +49,7 @@
     }
 
     input, select, button {
-      padding: 12px;
+      padding: 11px;
       margin: 6px 4px 6px 0;
       border-radius: 10px;
       border: 1px solid #ccc;
@@ -79,8 +76,8 @@
       background: #7a1e2c;
     }
 
-    .danger:hover {
-      background: #631724;
+    .secondary {
+      background: #374151;
     }
 
     ul {
@@ -90,25 +87,48 @@
 
     li {
       background: #f9fafb;
-      margin: 8px 0;
+      margin: 10px 0;
       padding: 12px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid #eee;
     }
 
-    .wardrobe-item {
+    .wardrobe-card {
       display: flex;
       gap: 12px;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .item-photo {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
+      width: 70px;
+      height: 70px;
+      border-radius: 14px;
       object-fit: cover;
-      background: #eee;
+      background: #e5e7eb;
       border: 1px solid #ddd;
+      flex-shrink: 0;
+    }
+
+    .tag-row {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      cursor: pointer;
+    }
+
+    .tag.active {
+      background: #1e3a8a;
+      color: white;
+      border-color: #1e3a8a;
     }
 
     .hero-board {
@@ -131,75 +151,95 @@
     }
 
     .score {
-      background: #eef2ff;
-      color: #1e3a8a;
+      background: rgba(255,255,255,0.12);
+      color: white;
       padding: 10px 12px;
       border-radius: 999px;
       font-weight: bold;
       font-size: 13px;
     }
 
-    .hero-board .score {
-      background: rgba(255,255,255,0.12);
-      color: white;
+    .variation-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 16px;
+    }
+
+    .variation-card {
+      background: white;
+      color: #111;
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .variation-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .variation-title {
+      font-size: 18px;
+      font-weight: bold;
     }
 
     .outfit-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 16px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 12px;
     }
 
     .outfit-card {
-      background: white;
+      background: #f9fafb;
       color: #111;
       border-radius: 16px;
-      padding: 12px;
-      min-height: 210px;
+      padding: 10px;
+      border: 1px solid #eee;
     }
 
     .outfit-card img {
       width: 100%;
-      height: 150px;
+      height: 120px;
       object-fit: cover;
       border-radius: 12px;
       background: #e5e7eb;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .outfit-card .placeholder {
+    .placeholder {
       width: 100%;
-      height: 150px;
+      height: 120px;
       border-radius: 12px;
       background: #e5e7eb;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #6b7280;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       font-size: 13px;
     }
 
     .label {
-      font-size: 12px;
+      font-size: 11px;
       color: #6b7280;
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
 
-    .hero-board .label {
-      color: #9ca3af;
-    }
-
     .item-name {
       font-weight: bold;
       margin-top: 4px;
+      font-size: 13px;
     }
 
     .small {
       font-size: 13px;
       color: #666;
+      white-space: pre-wrap;
     }
 
     .buy-grid {
@@ -216,23 +256,15 @@
       padding: 14px;
     }
 
-    .buy-card strong {
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .explanation {
+    .saved-look {
       background: #f9fafb;
-      padding: 16px;
+      border: 1px solid #e5e7eb;
       border-radius: 14px;
-      white-space: pre-wrap;
-      line-height: 1.5;
-      border: 1px solid #eee;
-      font-family: Arial, sans-serif;
-      margin-top: 12px;
+      padding: 14px;
+      margin-top: 10px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
       .container {
         flex-direction: column;
       }
@@ -241,10 +273,12 @@
         width: 100%;
       }
 
-      .right {
-        position: static;
+      .outfit-grid, .buy-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
+    }
 
+    @media (max-width: 600px) {
       .outfit-grid, .buy-grid {
         grid-template-columns: 1fr;
       }
@@ -257,7 +291,7 @@
 
     <div class="left">
       <h1>Wardrobe Outfit Picker</h1>
-      <p>Build outfits from what you own, then see what item could improve the look.</p>
+      <p>Build outfits from what you own, compare variations, and see what could improve the look.</p>
 
       <div class="section">
         <h2>Add Clothes</h2>
@@ -288,7 +322,7 @@
 
         <button onclick="addItem()">Add Item</button>
 
-        <p class="small">The app auto-detects possible styles from item name, category, and color.</p>
+        <p class="small">The app guesses styles automatically. You can correct them later on each wardrobe item.</p>
       </div>
 
       <div class="section">
@@ -325,21 +359,23 @@
         </select>
 
         <br>
-        <button onclick="generateOutfit()">Pick Outfit</button>
+        <button onclick="generateOutfits()">Generate 3 Options</button>
+      </div>
+
+      <div class="section">
+        <h2>Saved Looks</h2>
+        <button class="danger" onclick="clearSavedLooks()">Clear Saved Looks</button>
+        <div id="savedLooks"></div>
       </div>
     </div>
 
     <div class="right">
       <div class="hero-board">
-        <div class="label">Today’s Recommendation</div>
+        <div class="label">Outfit Variations</div>
         <h2 id="boardTitle">No outfit picked yet</h2>
         <p id="boardSubtitle">Add clothes, choose a style, then generate your look.</p>
 
-        <div id="scoreBox" class="score-box">
-          <span class="score">No score yet</span>
-        </div>
-
-        <div id="outfitCards" class="outfit-grid"></div>
+        <div id="variationContainer" class="variation-grid"></div>
       </div>
 
       <div class="section">
@@ -347,22 +383,26 @@
         <p class="small">Mock recommendation cards for now. Later, this can become affiliate links or sponsored placements.</p>
         <div id="buyCards" class="buy-grid"></div>
       </div>
-
-      <div class="section">
-        <h2>Why this recommendation?</h2>
-        <div id="outfitResult" class="explanation">No explanation yet.</div>
-      </div>
     </div>
 
   </div>
 
   <script>
     let wardrobe = JSON.parse(localStorage.getItem("wardrobe")) || [];
+    let savedLooks = JSON.parse(localStorage.getItem("savedLooks")) || [];
+    let currentVariations = [];
+
+    const allStyles = ["casual", "elegant", "streetwear", "geeky"];
 
     showWardrobe();
+    showSavedLooks();
 
     function saveWardrobe() {
       localStorage.setItem("wardrobe", JSON.stringify(wardrobe));
+    }
+
+    function saveSavedLooks() {
+      localStorage.setItem("savedLooks", JSON.stringify(savedLooks));
     }
 
     function detectStyles(name, category, color) {
@@ -378,9 +418,7 @@
         lowerName.includes("dress") ||
         color === "beige" ||
         color === "brown"
-      ) {
-        styles.push("elegant");
-      }
+      ) styles.push("elegant");
 
       if (
         lowerName.includes("oversized") ||
@@ -390,9 +428,7 @@
         lowerName.includes("chunky") ||
         lowerName.includes("bomber") ||
         color === "black"
-      ) {
-        styles.push("streetwear");
-      }
+      ) styles.push("streetwear");
 
       if (
         lowerName.includes("checkered") ||
@@ -401,9 +437,7 @@
         lowerName.includes("shirt") ||
         color === "blue" ||
         color === "gray"
-      ) {
-        styles.push("geeky");
-      }
+      ) styles.push("geeky");
 
       if (
         lowerName.includes("t-shirt") ||
@@ -412,13 +446,9 @@
         lowerName.includes("sneakers") ||
         lowerName.includes("shorts") ||
         category === "socks"
-      ) {
-        styles.push("casual");
-      }
+      ) styles.push("casual");
 
-      if (styles.length === 0) {
-        styles.push("casual");
-      }
+      if (styles.length === 0) styles.push("casual");
 
       return [...new Set(styles)];
     }
@@ -436,11 +466,9 @@
 
       if (photoInput.files && photoInput.files[0]) {
         let reader = new FileReader();
-
         reader.onload = function(event) {
           saveNewItem(name, category, color, event.target.result);
         };
-
         reader.readAsDataURL(photoInput.files[0]);
       } else {
         saveNewItem(name, category, color, "");
@@ -449,6 +477,7 @@
 
     function saveNewItem(name, category, color, photo) {
       let item = {
+        id: Date.now(),
         name: name,
         category: category,
         color: color,
@@ -479,20 +508,37 @@
         let listItem = document.createElement("li");
 
         let wrapper = document.createElement("div");
-        wrapper.className = "wardrobe-item";
+        wrapper.className = "wardrobe-card";
 
         let img = document.createElement("img");
         img.className = "item-photo";
         img.src = item.photo || "";
         img.alt = item.name;
 
-        let text = document.createElement("div");
-        text.innerText =
-          item.name + "\n" +
-          item.category + " · " + item.color + "\n" +
-          "styles: " + item.styles.join(", ");
+        let content = document.createElement("div");
+
+        let title = document.createElement("strong");
+        title.innerText = item.name;
+
+        let meta = document.createElement("div");
+        meta.className = "small";
+        meta.innerText = item.category + " · " + item.color;
+
+        let tagRow = document.createElement("div");
+        tagRow.className = "tag-row";
+
+        allStyles.forEach(function(style) {
+          let tag = document.createElement("span");
+          tag.className = item.styles.includes(style) ? "tag active" : "tag";
+          tag.innerText = style;
+          tag.onclick = function() {
+            toggleItemStyle(index, style);
+          };
+          tagRow.appendChild(tag);
+        });
 
         let removeButton = document.createElement("button");
+        removeButton.className = "danger";
         removeButton.innerText = "Remove";
         removeButton.onclick = function() {
           wardrobe.splice(index, 1);
@@ -500,26 +546,48 @@
           showWardrobe();
         };
 
+        content.appendChild(title);
+        content.appendChild(meta);
+        content.appendChild(tagRow);
+        content.appendChild(removeButton);
+
         wrapper.appendChild(img);
-        wrapper.appendChild(text);
-        wrapper.appendChild(removeButton);
+        wrapper.appendChild(content);
 
         listItem.appendChild(wrapper);
         list.appendChild(listItem);
       });
     }
 
+    function toggleItemStyle(index, style) {
+      let item = wardrobe[index];
+
+      if (item.styles.includes(style)) {
+        if (item.styles.length === 1) {
+          alert("Each item needs at least one style.");
+          return;
+        }
+
+        item.styles = item.styles.filter(function(existingStyle) {
+          return existingStyle !== style;
+        });
+      } else {
+        item.styles.push(style);
+      }
+
+      saveWardrobe();
+      showWardrobe();
+    }
+
     function clearWardrobe() {
       wardrobe = [];
       saveWardrobe();
       showWardrobe();
-
+      currentVariations = [];
+      renderVariations();
+      document.getElementById("buyCards").innerHTML = "";
       document.getElementById("boardTitle").innerText = "No outfit picked yet";
       document.getElementById("boardSubtitle").innerText = "Add clothes, choose a style, then generate your look.";
-      document.getElementById("outfitResult").innerText = "No explanation yet.";
-      document.getElementById("outfitCards").innerHTML = "";
-      document.getElementById("buyCards").innerHTML = "";
-      document.getElementById("scoreBox").innerHTML = '<span class="score">No score yet</span>';
     }
 
     function getItemsByCategory(category) {
@@ -528,10 +596,10 @@
       });
     }
 
-    function getRandomItemFromList(items) {
-      if (items.length === 0) return null;
-      let randomIndex = Math.floor(Math.random() * items.length);
-      return items[randomIndex];
+    function shuffle(items) {
+      return [...items].sort(function() {
+        return Math.random() - 0.5;
+      });
     }
 
     function getStyleRecommendedColors(styleGoal) {
@@ -549,24 +617,62 @@
       return ["shirt", "pants", "shoes"];
     }
 
-    function getBestItem(category, styleGoal) {
-      let items = getItemsByCategory(category);
+    function getOccasionAvoidRules(occasion) {
+      if (occasion === "wedding") return ["sneakers", "hoodie", "cargo", "oversized"];
+      if (occasion === "work") return ["cargo", "oversized", "chunky"];
+      if (occasion === "date") return ["too casual"];
+      return [];
+    }
 
-      let styleMatches = items.filter(function(item) {
-        return item.styles.includes(styleGoal);
+    function itemHasAvoidKeyword(item, occasion) {
+      if (!item) return false;
+      let avoidWords = getOccasionAvoidRules(occasion);
+      let lowerName = item.name.toLowerCase();
+
+      return avoidWords.some(function(word) {
+        return lowerName.includes(word);
       });
+    }
 
-      if (styleMatches.length > 0) return getRandomItemFromList(styleMatches);
+    function scoreItem(item, styleGoal, occasion, personality) {
+      if (!item) return -999;
 
+      let score = 0;
       let recommendedColors = getStyleRecommendedColors(styleGoal);
 
-      let colorMatches = items.filter(function(item) {
-        return recommendedColors.includes(item.color);
+      if (item.styles.includes(styleGoal)) score += 50;
+      if (recommendedColors.includes(item.color)) score += 25;
+      if (itemHasAvoidKeyword(item, occasion)) score -= 35;
+
+      if (personality === "safe") {
+        if (["black", "white", "beige", "gray", "brown"].includes(item.color)) score += 15;
+      }
+
+      if (personality === "stylish") {
+        if (item.styles.includes(styleGoal)) score += 20;
+      }
+
+      if (personality === "bold") {
+        if (["black", "green", "red", "blue"].includes(item.color)) score += 12;
+      }
+
+      score += Math.floor(Math.random() * 15);
+
+      return score;
+    }
+
+    function pickBestItem(category, styleGoal, occasion, personality, usedIds) {
+      let items = getItemsByCategory(category).filter(function(item) {
+        return !usedIds.includes(item.id);
       });
 
-      if (colorMatches.length > 0) return getRandomItemFromList(colorMatches);
+      if (items.length === 0) return null;
 
-      return getRandomItemFromList(items);
+      let sorted = shuffle(items).sort(function(a, b) {
+        return scoreItem(b, styleGoal, occasion, personality) - scoreItem(a, styleGoal, occasion, personality);
+      });
+
+      return sorted[0];
     }
 
     function getBuySuggestion(styleGoal, category) {
@@ -606,22 +712,30 @@
 
     function getFromScratchOutfit(styleGoal) {
       return {
-        shirt: { name: getBuySuggestion(styleGoal, "shirt"), category: "shirt", color: "recommended", styles: [styleGoal], photo: "" },
-        pants: { name: getBuySuggestion(styleGoal, "pants"), category: "pants", color: "recommended", styles: [styleGoal], photo: "" },
-        shoes: { name: getBuySuggestion(styleGoal, "shoes"), category: "shoes", color: "recommended", styles: [styleGoal], photo: "" },
-        outerwear: { name: getBuySuggestion(styleGoal, "outerwear"), category: "outerwear", color: "recommended", styles: [styleGoal], photo: "" }
+        shirt: fakeItem(getBuySuggestion(styleGoal, "shirt"), "shirt", styleGoal),
+        pants: fakeItem(getBuySuggestion(styleGoal, "pants"), "pants", styleGoal),
+        shoes: fakeItem(getBuySuggestion(styleGoal, "shoes"), "shoes", styleGoal),
+        outerwear: fakeItem(getBuySuggestion(styleGoal, "outerwear"), "outerwear", styleGoal)
+      };
+    }
+
+    function fakeItem(name, category, styleGoal) {
+      return {
+        id: "buy-" + category + "-" + Date.now() + Math.random(),
+        name: name,
+        category: category,
+        color: "recommended",
+        styles: [styleGoal],
+        photo: ""
       };
     }
 
     function evaluateItem(item, styleGoal) {
       if (!item) return false;
-
       let recommendedColors = getStyleRecommendedColors(styleGoal);
-
       if (item.styles && item.styles.includes(styleGoal)) return true;
       if (recommendedColors.includes(item.color)) return true;
       if (item.color === "recommended") return true;
-
       return false;
     }
 
@@ -651,10 +765,14 @@
         return availableCategories.includes(category);
       }).length;
 
+      let occasionPenalty = itemList.filter(function(item) {
+        return itemHasAvoidKeyword(item, occasion);
+      }).length * 10;
+
       let styleScore = Math.round((styleMatches / itemList.length) * 100);
       let colorScore = Math.round((colorMatches / itemList.length) * 100);
       let completenessScore = Math.round((completenessMatches / neededCategories.length) * 100);
-      let totalScore = Math.round((styleScore + colorScore + completenessScore) / 3);
+      let totalScore = Math.max(0, Math.round((styleScore + colorScore + completenessScore) / 3) - occasionPenalty);
 
       return {
         styleScore: styleScore,
@@ -664,12 +782,195 @@
       };
     }
 
-    function displayScores(scores) {
-      document.getElementById("scoreBox").innerHTML =
-        '<span class="score">Total: ' + scores.totalScore + '%</span>' +
-        '<span class="score">Style: ' + scores.styleScore + '%</span>' +
-        '<span class="score">Color: ' + scores.colorScore + '%</span>' +
-        '<span class="score">Completeness: ' + scores.completenessScore + '%</span>';
+    function generateOneVariation(personality) {
+      let styleGoal = document.getElementById("styleGoal").value;
+      let occasion = document.getElementById("occasion").value;
+      let strictness = document.getElementById("strictness").value;
+
+      if (strictness === "fromScratch") {
+        let scratch = getFromScratchOutfit(styleGoal);
+        let scores = calculateScores(scratch, styleGoal, occasion);
+
+        return {
+          personality: personality,
+          items: scratch,
+          scores: scores,
+          buySuggestions: [
+            "Shirt: " + scratch.shirt.name,
+            "Pants: " + scratch.pants.name,
+            "Shoes: " + scratch.shoes.name,
+            "Outerwear: " + scratch.outerwear.name
+          ],
+          explanation: "This option is built from scratch and ignores your current wardrobe. Use this when you want to change style direction completely."
+        };
+      }
+
+      let usedIds = [];
+      let shirt = pickBestItem("shirt", styleGoal, occasion, personality, usedIds);
+      if (shirt) usedIds.push(shirt.id);
+
+      let pants = pickBestItem("pants", styleGoal, occasion, personality, usedIds);
+      if (pants) usedIds.push(pants.id);
+
+      let shoes = pickBestItem("shoes", styleGoal, occasion, personality, usedIds);
+      if (shoes) usedIds.push(shoes.id);
+
+      let outerwear = pickBestItem("outerwear", styleGoal, occasion, personality, usedIds);
+      let hat = pickBestItem("hat", styleGoal, occasion, personality, usedIds);
+      let socks = pickBestItem("socks", styleGoal, occasion, personality, usedIds);
+
+      let items = { shirt, pants, shoes, outerwear, hat, socks };
+      let buySuggestions = [];
+
+      if (!shirt) buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
+      if (!pants) buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
+      if (!shoes) buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
+
+      if (strictness === "completeLook") {
+        if (shirt && !evaluateItem(shirt, styleGoal)) buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
+        if (pants && !evaluateItem(pants, styleGoal)) buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
+        if (shoes && !evaluateItem(shoes, styleGoal)) buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
+        if (!outerwear && styleGoal !== "casual") buySuggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
+      }
+
+      if (strictness === "wardrobeOnly") {
+        buySuggestions = [];
+      }
+
+      let scores = calculateScores(items, styleGoal, occasion);
+
+      return {
+        personality: personality,
+        items: items,
+        scores: scores,
+        buySuggestions: buySuggestions,
+        explanation: buildExplanation(personality, items, buySuggestions, scores, styleGoal, occasion, strictness)
+      };
+    }
+
+    function buildExplanation(personality, items, buySuggestions, scores, styleGoal, occasion, strictness) {
+      let text = "";
+
+      if (personality === "safe") text += "Safe option: this prioritizes neutral, easy-to-wear pieces.\n\n";
+      if (personality === "stylish") text += "Stylish option: this prioritizes stronger style match.\n\n";
+      if (personality === "bold") text += "Bolder option: this allows slightly more expressive choices.\n\n";
+
+      text += "Score: " + scores.totalScore + "% total, " + scores.styleScore + "% style, " + scores.colorScore + "% color, " + scores.completenessScore + "% completeness.\n\n";
+
+      if (!items.shirt || !items.pants || !items.shoes) {
+        text += "This is not a complete outfit yet because one or more core pieces are missing.\n";
+      } else {
+        text += "This can work as a complete outfit using your wardrobe.\n";
+      }
+
+      if (strictness === "wardrobeOnly") {
+        text += "\nWardrobe-only mode is active, so the app will not suggest items to buy.";
+      } else if (buySuggestions.length > 0) {
+        text += "\nTo improve this look, consider adding:\n";
+        buySuggestions.forEach(function(suggestion) {
+          text += "- " + suggestion + "\n";
+        });
+      } else {
+        text += "\nNo buy recommendation needed for this option.";
+      }
+
+      return text;
+    }
+
+    function generateOutfits() {
+      let styleGoal = document.getElementById("styleGoal").value;
+      let occasion = document.getElementById("occasion").value;
+
+      currentVariations = [
+        generateOneVariation("safe"),
+        generateOneVariation("stylish"),
+        generateOneVariation("bold")
+      ];
+
+      document.getElementById("boardTitle").innerText =
+        styleGoal.charAt(0).toUpperCase() + styleGoal.slice(1) + " options for " + occasion;
+
+      document.getElementById("boardSubtitle").innerText =
+        "Compare 3 outfit directions, then save the one you like.";
+
+      renderVariations();
+      renderCombinedBuySuggestions();
+    }
+
+    function regenerateVariation(index) {
+      let personality = currentVariations[index].personality;
+      currentVariations[index] = generateOneVariation(personality);
+      renderVariations();
+      renderCombinedBuySuggestions();
+    }
+
+    function renderVariations() {
+      let container = document.getElementById("variationContainer");
+      container.innerHTML = "";
+
+      if (currentVariations.length === 0) {
+        return;
+      }
+
+      currentVariations.forEach(function(variation, index) {
+        let card = document.createElement("div");
+        card.className = "variation-card";
+
+        let header = document.createElement("div");
+        header.className = "variation-header";
+
+        let title = document.createElement("div");
+        title.innerHTML =
+          '<div class="variation-title">Option ' + (index + 1) + ': ' + capitalize(variation.personality) + '</div>' +
+          '<div class="small">Total score: ' + variation.scores.totalScore + '%</div>';
+
+        let actions = document.createElement("div");
+
+        let regenButton = document.createElement("button");
+        regenButton.className = "secondary";
+        regenButton.innerText = "Regenerate";
+        regenButton.onclick = function() {
+          regenerateVariation(index);
+        };
+
+        let saveButton = document.createElement("button");
+        saveButton.innerText = "Save Look";
+        saveButton.onclick = function() {
+          saveLook(index);
+        };
+
+        actions.appendChild(regenButton);
+        actions.appendChild(saveButton);
+
+        header.appendChild(title);
+        header.appendChild(actions);
+
+        let scoreBox = document.createElement("div");
+        scoreBox.className = "score-box";
+        scoreBox.innerHTML =
+          '<span class="score">Style: ' + variation.scores.styleScore + '%</span>' +
+          '<span class="score">Color: ' + variation.scores.colorScore + '%</span>' +
+          '<span class="score">Complete: ' + variation.scores.completenessScore + '%</span>';
+
+        let outfitGrid = document.createElement("div");
+        outfitGrid.className = "outfit-grid";
+
+        Object.keys(variation.items).forEach(function(key) {
+          let item = variation.items[key];
+          if (item) outfitGrid.appendChild(createOutfitCard(item, capitalize(key)));
+        });
+
+        let explanation = document.createElement("p");
+        explanation.className = "small";
+        explanation.innerText = variation.explanation;
+
+        card.appendChild(header);
+        card.appendChild(scoreBox);
+        card.appendChild(outfitGrid);
+        card.appendChild(explanation);
+
+        container.appendChild(card);
+      });
     }
 
     function createOutfitCard(item, label) {
@@ -707,19 +1008,21 @@
       return card;
     }
 
-    function displayOutfitCards(items) {
-      let container = document.getElementById("outfitCards");
-      container.innerHTML = "";
+    function renderCombinedBuySuggestions() {
+      let allSuggestions = [];
 
-      if (items.shirt) container.appendChild(createOutfitCard(items.shirt, "Shirt"));
-      if (items.pants) container.appendChild(createOutfitCard(items.pants, "Pants"));
-      if (items.shoes) container.appendChild(createOutfitCard(items.shoes, "Shoes"));
-      if (items.outerwear) container.appendChild(createOutfitCard(items.outerwear, "Outerwear"));
-      if (items.hat) container.appendChild(createOutfitCard(items.hat, "Hat"));
-      if (items.socks) container.appendChild(createOutfitCard(items.socks, "Socks"));
+      currentVariations.forEach(function(variation) {
+        variation.buySuggestions.forEach(function(suggestion) {
+          if (!allSuggestions.includes(suggestion)) {
+            allSuggestions.push(suggestion);
+          }
+        });
+      });
+
+      displayBuyCards(allSuggestions);
     }
 
-    function displayBuyCards(suggestions, styleGoal) {
+    function displayBuyCards(suggestions) {
       let container = document.getElementById("buyCards");
       container.innerHTML = "";
 
@@ -737,7 +1040,7 @@
 
         let text = document.createElement("p");
         text.className = "small";
-        text.innerText = "Suggested to strengthen your " + styleGoal + " look. Later this can link to real products.";
+        text.innerText = "Suggested to strengthen one or more outfit options. Later this can link to real products.";
 
         let button = document.createElement("button");
         button.innerText = "View options";
@@ -753,137 +1056,71 @@
       });
     }
 
-    function updateBoardTitle(styleGoal, occasion, scores) {
-      document.getElementById("boardTitle").innerText =
-        styleGoal.charAt(0).toUpperCase() + styleGoal.slice(1) + " outfit for " + occasion;
+    function saveLook(index) {
+      let variation = currentVariations[index];
 
-      if (scores.totalScore >= 75) {
-        document.getElementById("boardSubtitle").innerText = "Strong match. Your wardrobe supports this look well.";
-      } else if (scores.totalScore >= 50) {
-        document.getElementById("boardSubtitle").innerText = "Good start. A few better pieces would improve the look.";
-      } else {
-        document.getElementById("boardSubtitle").innerText = "This style is still weak in your wardrobe. Start with the suggested pieces.";
-      }
+      let saved = {
+        date: new Date().toLocaleString(),
+        personality: variation.personality,
+        score: variation.scores.totalScore,
+        items: variation.items
+      };
+
+      savedLooks.push(saved);
+      saveSavedLooks();
+      showSavedLooks();
+      alert("Look saved.");
     }
 
-    function generateOutfit() {
-      let styleGoal = document.getElementById("styleGoal").value;
-      let occasion = document.getElementById("occasion").value;
-      let strictness = document.getElementById("strictness").value;
+    function showSavedLooks() {
+      let container = document.getElementById("savedLooks");
+      container.innerHTML = "";
 
-      let shirt, pants, shoes, socks, hat, outerwear;
-      let result = "";
-
-      if (strictness === "fromScratch") {
-        let scratch = getFromScratchOutfit(styleGoal);
-
-        shirt = scratch.shirt;
-        pants = scratch.pants;
-        shoes = scratch.shoes;
-        outerwear = scratch.outerwear;
-
-        let outfitItems = { shirt, pants, shoes, outerwear };
-        let scores = calculateScores(outfitItems, styleGoal, occasion);
-
-        result += "This is a from-scratch outfit foundation.\n\n";
-        result += "It ignores your current wardrobe and creates a clean starting point for the style you selected.\n\n";
-        result += "Recommended pieces:\n";
-        result += "- " + shirt.name + "\n";
-        result += "- " + pants.name + "\n";
-        result += "- " + shoes.name + "\n";
-        result += "- " + outerwear.name + "\n";
-
-        displayOutfitCards(outfitItems);
-        displayBuyCards([
-          "Shirt: " + shirt.name,
-          "Pants: " + pants.name,
-          "Shoes: " + shoes.name,
-          "Outerwear: " + outerwear.name
-        ], styleGoal);
-
-        displayScores(scores);
-        updateBoardTitle(styleGoal, occasion, scores);
-        document.getElementById("outfitResult").innerText = result;
+      if (savedLooks.length === 0) {
+        container.innerHTML = "<p class='small'>No saved looks yet.</p>";
         return;
       }
 
-      shirt = getBestItem("shirt", styleGoal);
-      pants = getBestItem("pants", styleGoal);
-      shoes = getBestItem("shoes", styleGoal);
-      socks = getBestItem("socks", styleGoal);
-      hat = getBestItem("hat", styleGoal);
-      outerwear = getBestItem("outerwear", styleGoal);
+      savedLooks.forEach(function(look, index) {
+        let div = document.createElement("div");
+        div.className = "saved-look";
 
-      let outfitItems = { shirt, pants, shoes, outerwear, hat, socks };
+        let text = "Saved: " + look.date + "\n";
+        text += "Type: " + capitalize(look.personality) + "\n";
+        text += "Score: " + look.score + "%\n\n";
 
-      let missingCore = [];
-      if (!shirt) missingCore.push("shirt");
-      if (!pants) missingCore.push("pants");
-      if (!shoes) missingCore.push("shoes");
-
-      let buySuggestions = [];
-
-      if (missingCore.length > 0) {
-        result += "I found these usable items from your wardrobe:\n";
-        if (shirt) result += "- Shirt: " + shirt.name + "\n";
-        if (pants) result += "- Pants: " + pants.name + "\n";
-        if (shoes) result += "- Shoes: " + shoes.name + "\n";
-        if (!shirt && !pants && !shoes) result += "- No core outfit items yet.\n";
-
-        result += "\nTo build a complete outfit, you may still need:\n";
-
-        missingCore.forEach(function(category) {
-          let suggestion = category.charAt(0).toUpperCase() + category.slice(1) + ": " + getBuySuggestion(styleGoal, category);
-          result += "- " + suggestion + "\n";
-          buySuggestions.push(suggestion);
+        Object.keys(look.items).forEach(function(key) {
+          let item = look.items[key];
+          if (item) text += capitalize(key) + ": " + item.name + "\n";
         });
 
-        result += "\nThese are starting suggestions, not strict requirements.";
+        let pre = document.createElement("div");
+        pre.className = "small";
+        pre.innerText = text;
 
-        let scores = calculateScores(outfitItems, styleGoal, occasion);
+        let removeButton = document.createElement("button");
+        removeButton.className = "danger";
+        removeButton.innerText = "Remove";
+        removeButton.onclick = function() {
+          savedLooks.splice(index, 1);
+          saveSavedLooks();
+          showSavedLooks();
+        };
 
-        displayOutfitCards(outfitItems);
-        displayBuyCards(strictness === "completeLook" ? buySuggestions : [], styleGoal);
-        displayScores(scores);
-        updateBoardTitle(styleGoal, occasion, scores);
-        document.getElementById("outfitResult").innerText = result;
-        return;
-      }
+        div.appendChild(pre);
+        div.appendChild(removeButton);
+        container.appendChild(div);
+      });
+    }
 
-      result += "This outfit uses your wardrobe first.\n\n";
-      result += "Selected pieces:\n";
-      result += "- Shirt: " + shirt.name + "\n";
-      result += "- Pants: " + pants.name + "\n";
-      result += "- Shoes: " + shoes.name + "\n";
-      if (outerwear) result += "- Outerwear: " + outerwear.name + "\n";
-      if (hat) result += "- Hat: " + hat.name + "\n";
-      if (socks) result += "- Socks: " + socks.name + "\n";
+    function clearSavedLooks() {
+      savedLooks = [];
+      saveSavedLooks();
+      showSavedLooks();
+    }
 
-      if (strictness === "completeLook") {
-        if (!evaluateItem(shirt, styleGoal)) buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
-        if (!evaluateItem(pants, styleGoal)) buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
-        if (!evaluateItem(shoes, styleGoal)) buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
-        if (!outerwear && styleGoal !== "casual") buySuggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
-      }
-
-      result += "\nRecommendation logic:\n";
-
-      if (strictness === "wardrobeOnly") {
-        result += "Wardrobe-only mode is active, so no buy suggestions are shown.";
-      } else if (buySuggestions.length === 0) {
-        result += "Your wardrobe already supports this style well.";
-      } else {
-        result += "The suggested buy items would make the outfit closer to your selected style.";
-      }
-
-      let scores = calculateScores(outfitItems, styleGoal, occasion);
-
-      displayOutfitCards(outfitItems);
-      displayBuyCards(buySuggestions, styleGoal);
-      displayScores(scores);
-      updateBoardTitle(styleGoal, occasion, scores);
-
-      document.getElementById("outfitResult").innerText = result;
+    function capitalize(text) {
+      return text.charAt(0).toUpperCase() + text.slice(1);
     }
   </script>
 </body>
