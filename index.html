@@ -32,6 +32,15 @@
   <h2>Your Wardrobe</h2>
   <ul id="wardrobeList"></ul>
 
+  <h2>Choose Your Style Goal</h2>
+
+  <select id="styleGoal">
+    <option value="casual">Casual</option>
+    <option value="elegant">Elegant</option>
+    <option value="streetwear">Streetwear</option>
+    <option value="geeky">Geeky</option>
+  </select>
+
   <h2>Generate Outfit</h2>
   <button onclick="generateOutfit()">Pick Outfit</button>
 
@@ -75,11 +84,13 @@
       });
     }
 
-    function getRandomItem(category) {
-      let items = wardrobe.filter(function(item) {
+    function getItemsByCategory(category) {
+      return wardrobe.filter(function(item) {
         return item.category === category;
       });
+    }
 
+    function getRandomItemFromList(items) {
       if (items.length === 0) {
         return null;
       }
@@ -88,29 +99,80 @@
       return items[randomIndex];
     }
 
-    function generateOutfit() {
-      let shirt = getRandomItem("shirt");
-      let pants = getRandomItem("pants");
-      let shoes = getRandomItem("shoes");
-      let socks = getRandomItem("socks");
-      let hat = getRandomItem("hat");
+    function getStyleRecommendedColors(styleGoal) {
+      if (styleGoal === "elegant") {
+        return ["black", "white", "beige", "gray", "brown"];
+      }
 
-      if (!shirt || !pants || !shoes || !socks) {
+      if (styleGoal === "streetwear") {
+        return ["black", "white", "gray", "blue"];
+      }
+
+      if (styleGoal === "geeky") {
+        return ["white", "blue", "brown", "gray"];
+      }
+
+      return ["black", "white", "blue", "brown", "beige", "gray"];
+    }
+
+    function getBestItem(category, styleGoal) {
+      let items = getItemsByCategory(category);
+      let recommendedColors = getStyleRecommendedColors(styleGoal);
+
+      let matchingItems = items.filter(function(item) {
+        return recommendedColors.includes(item.color);
+      });
+
+      if (matchingItems.length > 0) {
+        return getRandomItemFromList(matchingItems);
+      }
+
+      return getRandomItemFromList(items);
+    }
+
+    function generateOutfit() {
+      let styleGoal = document.getElementById("styleGoal").value;
+
+      let shirt = getBestItem("shirt", styleGoal);
+      let pants = getBestItem("pants", styleGoal);
+      let shoes = getBestItem("shoes", styleGoal);
+      let socks = getBestItem("socks", styleGoal);
+      let hat = getBestItem("hat", styleGoal);
+
+      if (!shirt || !pants || !shoes) {
         document.getElementById("outfitResult").innerText =
-          "Please add at least 1 shirt, 1 pants, 1 shoes, and 1 socks.";
+          "Please add at least 1 shirt, 1 pants, and 1 shoes.";
         return;
       }
 
-      let outfit = "Shirt: " + shirt.name +
-        "\nPants: " + pants.name +
-        "\nShoes: " + shoes.name +
-        "\nSocks: " + socks.name;
+      let result = "Style goal: " + styleGoal + "\n\n";
 
-      if (hat) {
-        outfit += "\nHat: " + hat.name;
+      result += "Wear this from your wardrobe:\n";
+      result += "Shirt: " + shirt.name + "\n";
+      result += "Pants: " + pants.name + "\n";
+      result += "Shoes: " + shoes.name + "\n";
+
+      if (socks) {
+        result += "Socks: " + socks.name + "\n";
       }
 
-      document.getElementById("outfitResult").innerText = outfit;
+      if (hat) {
+        result += "Hat: " + hat.name + "\n";
+      }
+
+      result += "\nWhy this works:\n";
+
+      if (styleGoal === "elegant") {
+        result += "Elegant style usually works best with neutral colors like black, white, beige, gray, or brown.";
+      } else if (styleGoal === "streetwear") {
+        result += "Streetwear usually works well with black, white, gray, blue, and stronger casual pieces.";
+      } else if (styleGoal === "geeky") {
+        result += "Geeky style usually works well with clean, simple colors and slightly classic combinations.";
+      } else {
+        result += "Casual style is flexible, so this outfit is picked based on what you already own.";
+      }
+
+      document.getElementById("outfitResult").innerText = result;
     }
   </script>
 </body>
