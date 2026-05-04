@@ -1,7 +1,9 @@
-<!DOCTYPE html>
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
 <html>
 <head>
-  <title>Wardrobe Product Prototype</title>
+  <title>Wardrobe Decision Engine</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
@@ -11,12 +13,14 @@
       --text: #1f1f1f;
       --muted: #6d6d6d;
       --line: #e7e2da;
-      --accent: #202020;
-      --accent-2: #7b5e57;
+      --accent: #171717;
+      --accent2: #8a6b52;
       --soft: #f8f6f2;
       --chip: #f1ede7;
       --danger: #7a1e2c;
-      --shadow: 0 10px 24px rgba(0,0,0,0.05);
+      --good: #1f7a4d;
+      --warn: #9c6a1a;
+      --shadow: 0 10px 24px rgba(0,0,0,0.055);
       --radius: 18px;
     }
 
@@ -36,20 +40,39 @@
       margin-top: 0;
     }
 
+    h1 {
+      font-size: 26px;
+      letter-spacing: -0.4px;
+    }
+
+    h2 {
+      font-size: 20px;
+      letter-spacing: -0.2px;
+    }
+
+    h3 {
+      font-size: 15px;
+    }
+
     .container {
       max-width: 1440px;
       margin: 0 auto;
-      display: flex;
+      display: grid;
+      grid-template-columns: 410px minmax(0, 1fr);
       gap: 24px;
-      align-items: flex-start;
+      align-items: start;
     }
 
     .left {
-      width: 38%;
+      min-width: 0;
     }
 
     .right {
-      width: 62%;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
     }
 
     .section {
@@ -58,7 +81,7 @@
       border-radius: var(--radius);
       padding: 20px;
       box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .hero {
@@ -68,6 +91,7 @@
     .subtitle {
       color: var(--muted);
       line-height: 1.5;
+      font-size: 14px;
     }
 
     .row {
@@ -88,6 +112,10 @@
     input[type="text"] {
       min-width: 220px;
       flex: 1;
+    }
+
+    input[type="file"] {
+      width: 100%;
     }
 
     button {
@@ -162,6 +190,7 @@
       font-size: 12px;
       color: var(--muted);
       background: #efebe5;
+      text-align: center;
     }
 
     .item-main {
@@ -200,22 +229,65 @@
       background: #151515;
       color: white;
       border-radius: 24px;
-      padding: 20px;
+      padding: 18px;
       box-shadow: var(--shadow);
-      margin-bottom: 20px;
       position: sticky;
-      top: 20px;
+      top: 18px;
+      max-height: calc(100vh - 36px);
+      overflow: auto;
     }
 
     .preview-card .muted {
       color: #d7d7d7;
     }
 
-    .preview-panel {
-      margin-top: 12px;
+    .preview-frame {
+      margin-top: 14px;
       border-radius: 18px;
       padding: 12px;
-      background: rgba(255,255,255,0.08);
+      background: #2a2a2a;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .preview-stage {
+      width: 100%;
+      max-width: 340px;
+      height: 420px;
+      margin: 0 auto;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.09), transparent 22%),
+        linear-gradient(180deg, #343434 0%, #272727 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .preview-stage svg {
+      display: block;
+      width: 260px;
+      height: 390px;
+      max-width: 86%;
+      max-height: 94%;
+    }
+
+    .preview-items {
+      margin-top: 12px;
+      color: #eeeeee;
+      font-size: 12px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .preview-empty {
+      color: #ddd;
+      border: 1px dashed rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
     }
 
     .score-row {
@@ -227,10 +299,16 @@
 
     .score-chip {
       background: rgba(255,255,255,0.12);
+      color: #fff;
       padding: 8px 12px;
       border-radius: 999px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
+    }
+
+    .score-chip.light {
+      background: #f0ece7;
+      color: #222;
     }
 
     .result-card {
@@ -238,6 +316,7 @@
       border-radius: 18px;
       padding: 18px;
       background: #fff;
+      margin-bottom: 16px;
     }
 
     .outfit-grid {
@@ -252,11 +331,12 @@
       border-radius: 16px;
       background: var(--soft);
       padding: 10px;
+      min-width: 0;
     }
 
     .look-item-card img {
       width: 100%;
-      height: 128px;
+      height: 118px;
       object-fit: cover;
       border-radius: 12px;
       border: 1px solid var(--line);
@@ -266,7 +346,7 @@
 
     .look-item-card .placeholder {
       width: 100%;
-      height: 128px;
+      height: 118px;
       border-radius: 12px;
       border: 1px solid var(--line);
       background: #efebe5;
@@ -276,6 +356,7 @@
       color: var(--muted);
       margin-bottom: 8px;
       font-size: 12px;
+      text-align: center;
     }
 
     .label {
@@ -373,32 +454,54 @@
       text-decoration: none;
       font-size: 13px;
       font-weight: bold;
-      color: var(--accent-2);
+      color: var(--accent2);
     }
 
-    @media (max-width: 1100px) {
+    @media (max-width: 1280px) {
       .container {
-        flex-direction: column;
+        grid-template-columns: 380px minmax(0, 1fr);
       }
-      .left, .right {
-        width: 100%;
-      }
-      .preview-card {
-        position: static;
-      }
-    }
 
-    @media (max-width: 760px) {
-      .outfit-grid,
-      .suggestion-list {
+      .right {
+        grid-template-columns: 360px minmax(0, 1fr);
+      }
+
+      .outfit-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 1040px) {
+      .container {
+        display: block;
+      }
+
+      .right {
+        display: block;
+      }
+
+      .preview-card {
+        position: static;
+        max-height: none;
+      }
+
+      .preview-stage {
+        height: 380px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 14px;
+      }
+
       .outfit-grid,
       .suggestion-list {
         grid-template-columns: 1fr;
+      }
+
+      .preview-stage {
+        height: 340px;
       }
     }
   </style>
@@ -410,7 +513,7 @@
       <div class="section hero">
         <h1>Wardrobe Decision Engine</h1>
         <p class="subtitle">
-          Upload what you own, generate your best wearable outfit, and explore from-scratch style transformations you can try on and save.
+          Upload what you own, generate your best wearable outfit, and explore from-scratch style transformations.
         </p>
       </div>
 
@@ -432,7 +535,7 @@
           <button onclick="addItem()">Add Item</button>
         </div>
         <p class="muted">
-          Color is auto-guessed. In a real product, this should come from backend image detection. For now, you can edit it later if the guess is wrong.
+          Color is auto-guessed from the item name for now. In the real product, this should be detected from the photo by backend AI.
         </p>
       </div>
 
@@ -488,27 +591,29 @@
         <div class="label" style="color:#d6d6d6;">Preview</div>
         <h2 id="previewTitle">No look selected</h2>
         <p id="previewSubtitle" class="muted">Generate recommendations, then click “Try On Full Look”.</p>
-        <div id="previewPanel" class="preview-panel"></div>
+        <div id="previewPanel" class="preview-frame"></div>
       </div>
 
-      <div class="section">
-        <h2>1. Best from Wardrobe</h2>
-        <div id="wardrobeRecommendation"></div>
-      </div>
+      <div>
+        <div class="section">
+          <h2>1. Best from Wardrobe</h2>
+          <div id="wardrobeRecommendation"></div>
+        </div>
 
-      <div class="section">
-        <h2>2. Style Transformation / From Scratch</h2>
-        <p class="muted">
-          Three from-scratch directions based on your selected style goal. Each can be regenerated, tried on, and saved independently.
-        </p>
-        <div id="transformationLooks" class="transformation-grid"></div>
+        <div class="section">
+          <h2>2. Style Transformation / From Scratch</h2>
+          <p class="muted">
+            Three from-scratch directions based on your selected style goal. Each can be regenerated, tried on, and saved independently.
+          </p>
+          <div id="transformationLooks" class="transformation-grid"></div>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    const STORAGE_WARDROBE = "wardrobeRealV1";
-    const STORAGE_SAVED = "savedLooksRealV1";
+    const STORAGE_WARDROBE = "wardrobeProductV2";
+    const STORAGE_SAVED = "savedLooksProductV2";
 
     let wardrobe = JSON.parse(localStorage.getItem(STORAGE_WARDROBE)) || [];
     let savedLooks = JSON.parse(localStorage.getItem(STORAGE_SAVED)) || [];
@@ -520,20 +625,22 @@
     const allColors = ["black", "white", "blue", "brown", "beige", "gray", "green", "red"];
 
     const colorHexMap = {
-      black: "#222222",
-      white: "#f3f3f3",
-      blue: "#5377a5",
-      brown: "#8b6a4e",
-      beige: "#d8c0a2",
-      gray: "#9a9a9a",
-      green: "#5b7b53",
-      red: "#a54b4b",
+      black: "#1f1f1f",
+      white: "#f4f1ec",
+      blue: "#4f75a7",
+      brown: "#7c573e",
+      beige: "#d4b996",
+      gray: "#8d9299",
+      green: "#54754f",
+      red: "#9b4141",
       recommended: "#cfc6ba"
     };
 
     showWardrobe();
     showSavedLooks();
     renderPreview();
+    renderWardrobeRecommendation();
+    renderTransformationResults();
 
     function saveWardrobe() {
       localStorage.setItem(STORAGE_WARDROBE, JSON.stringify(wardrobe));
@@ -586,7 +693,7 @@
       if (
         lower.includes("oxford") ||
         lower.includes("blazer") ||
-        lower.includes("loafers") ||
+        lower.includes("loafer") ||
         lower.includes("tailored") ||
         lower.includes("chino") ||
         lower.includes("dress") ||
@@ -1044,12 +1151,7 @@
     function computeLookScores(items, styleGoal, occasion) {
       const itemList = Object.values(items).filter(Boolean);
       if (itemList.length === 0) {
-        return {
-          total: 0,
-          style: 0,
-          color: 0,
-          completeness: 0
-        };
+        return { total: 0, style: 0, color: 0, completeness: 0 };
       }
 
       const recommendedColors = getStyleRecommendedColors(styleGoal);
@@ -1104,7 +1206,7 @@
       if (!pants) suggestions.push(catalog.pants[0]);
       if (!shoes) suggestions.push(catalog.shoes[0]);
 
-      if (outerwear === null && occasionRules.bonus.includes("outerwear")) {
+      if (!outerwear && occasionRules.bonus.includes("outerwear")) {
         suggestions.push(catalog.outerwear[0]);
       }
 
@@ -1124,9 +1226,9 @@
 
       let explanation = "This recommendation prioritizes pieces you already own.";
       if (!shirt || !pants || !shoes) {
-        explanation += "\n\nYour wardrobe is missing at least one core category, so the app is suggesting the most useful pieces to complete the outfit.";
+        explanation += "\n\nYour wardrobe is missing at least one core category, so the app suggests the most useful pieces to complete the outfit.";
       } else if (uniqueSuggestions.length > 0) {
-        explanation += "\n\nYou can already wear this look, but the suggested missing pieces would make it stronger or better aligned to your selected style.";
+        explanation += "\n\nYou can already wear this look, but the suggested pieces would make it stronger or better aligned to your selected style.";
       } else {
         explanation += "\n\nYour current wardrobe already supports this look quite well.";
       }
@@ -1175,8 +1277,7 @@
         items,
         scores,
         suggestions: [shirt, pants, shoes].concat(outerwear ? [outerwear] : []),
-        explanation:
-          "This look ignores your current wardrobe and builds a fresh style direction from scratch. Use it when you want to move toward a new aesthetic, not just optimize what you already own."
+        explanation: "This look ignores your current wardrobe and builds a fresh style direction from scratch. Use it when you want to move toward a new aesthetic, not just optimize what you already own."
       };
     }
 
@@ -1281,10 +1382,10 @@
       const scoreRow = document.createElement("div");
       scoreRow.className = "score-row";
       scoreRow.innerHTML = `
-        <span class="score-chip">Total: ${wardrobeResult.scores.total}%</span>
-        <span class="score-chip">Style: ${wardrobeResult.scores.style}%</span>
-        <span class="score-chip">Color: ${wardrobeResult.scores.color}%</span>
-        <span class="score-chip">Completeness: ${wardrobeResult.scores.completeness}%</span>
+        <span class="score-chip light">Total: ${wardrobeResult.scores.total}%</span>
+        <span class="score-chip light">Style: ${wardrobeResult.scores.style}%</span>
+        <span class="score-chip light">Color: ${wardrobeResult.scores.color}%</span>
+        <span class="score-chip light">Completeness: ${wardrobeResult.scores.completeness}%</span>
       `;
 
       const grid = document.createElement("div");
@@ -1377,7 +1478,7 @@
         const headRight = document.createElement("div");
         headRight.className = "score-row";
         headRight.innerHTML = `
-          <span class="score-chip" style="background:#f0ece7;color:#222;">Total: ${look.scores.total}%</span>
+          <span class="score-chip light">Total: ${look.scores.total}%</span>
         `;
 
         header.appendChild(headLeft);
@@ -1458,58 +1559,104 @@
       return colorHexMap[color] || "#c5beb5";
     }
 
+    function buildModelSVG(items) {
+      const shirt = items.shirt || {};
+      const pants = items.pants || {};
+      const shoes = items.shoes || {};
+      const outerwear = items.outerwear || {};
+      const hat = items.hat || {};
+
+      const shirtColor = colorHex(shirt.color || "recommended");
+      const pantsColor = colorHex(pants.color || "recommended");
+      const shoesColor = colorHex(shoes.color || "black");
+      const outerwearColor = outerwear.name ? colorHex(outerwear.color || "recommended") : null;
+      const hatColor = hat.name ? colorHex(hat.color || "recommended") : null;
+
+      return `
+        <svg viewBox="0 0 260 390" xmlns="http://www.w3.org/2000/svg" aria-label="Outfit preview">
+          <defs>
+            <linearGradient id="skinGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="#e8c3a4"/>
+              <stop offset="100%" stop-color="#d2a07f"/>
+            </linearGradient>
+            <linearGradient id="shadowGrad" x1="0" x2="1">
+              <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+              <stop offset="50%" stop-color="#000" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000" flood-opacity="0.22"/>
+            </filter>
+          </defs>
+
+          <ellipse cx="130" cy="366" rx="70" ry="12" fill="url(#shadowGrad)"/>
+
+          <g filter="url(#softShadow)">
+            <path d="M112 83 C114 100 146 100 148 83 L148 112 C148 124 112 124 112 112 Z" fill="url(#skinGrad)"/>
+            <ellipse cx="130" cy="55" rx="30" ry="34" fill="url(#skinGrad)"/>
+            <path d="M101 48 C102 22 116 11 132 10 C153 11 163 27 159 50 C153 36 142 32 129 32 C115 32 106 37 101 48 Z" fill="#2b2019"/>
+            <path d="M99 54 C94 54 91 59 93 65 C95 71 101 70 102 63 Z" fill="#d2a07f"/>
+            <path d="M161 54 C166 54 169 59 167 65 C165 71 159 70 158 63 Z" fill="#d2a07f"/>
+
+            <circle cx="118" cy="56" r="3" fill="#2b2019"/>
+            <circle cx="142" cy="56" r="3" fill="#2b2019"/>
+            <path d="M126 66 C128 69 132 69 134 66" stroke="#9b6b59" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M118 75 C126 81 137 81 145 75" stroke="#9b5656" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+            ${hatColor ? `
+              <path d="M96 31 C102 13 117 6 130 6 C148 6 160 16 164 31 C144 23 118 23 96 31 Z" fill="${hatColor}"/>
+              <rect x="94" y="28" width="72" height="9" rx="4" fill="${hatColor}"/>
+            ` : ""}
+
+            <path d="M82 122 C68 133 61 154 59 188 L57 248 C57 258 65 264 74 263 C83 262 88 255 88 246 L91 156 C92 144 98 137 108 133 Z" fill="${outerwearColor || shirtColor}"/>
+            <path d="M178 122 C192 133 199 154 201 188 L203 248 C203 258 195 264 186 263 C177 262 172 255 172 246 L169 156 C168 144 162 137 152 133 Z" fill="${outerwearColor || shirtColor}"/>
+
+            <path d="M92 120 C100 108 116 104 130 104 C144 104 160 108 168 120 L174 226 C158 236 102 236 86 226 Z" fill="${shirtColor}"/>
+            <path d="M112 107 L130 122 L148 107" fill="none" stroke="rgba(255,255,255,0.42)" stroke-width="3" stroke-linecap="round"/>
+
+            ${outerwearColor ? `
+              <path d="M84 120 C96 110 110 106 126 106 L113 226 L86 226 Z" fill="${outerwearColor}" opacity="0.93"/>
+              <path d="M176 120 C164 110 150 106 134 106 L147 226 L174 226 Z" fill="${outerwearColor}" opacity="0.93"/>
+              <path d="M124 108 L130 226 L136 108" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+              <path d="M104 119 L126 137" stroke="rgba(255,255,255,0.24)" stroke-width="3" stroke-linecap="round"/>
+              <path d="M156 119 L134 137" stroke="rgba(255,255,255,0.24)" stroke-width="3" stroke-linecap="round"/>
+            ` : ""}
+
+            <ellipse cx="67" cy="263" rx="11" ry="12" fill="url(#skinGrad)"/>
+            <ellipse cx="193" cy="263" rx="11" ry="12" fill="url(#skinGrad)"/>
+
+            <path d="M90 226 C103 233 118 235 130 234 C142 235 157 233 170 226 L166 327 C166 339 156 346 147 342 C139 339 136 331 136 322 L132 247 L128 247 L124 322 C124 331 121 339 113 342 C104 346 94 339 94 327 Z" fill="${pantsColor}"/>
+            <path d="M130 238 L130 334" stroke="rgba(0,0,0,0.16)" stroke-width="3"/>
+
+            <path d="M94 331 C86 336 78 344 81 352 C84 360 118 361 124 353 C127 349 123 340 116 335 Z" fill="${shoesColor}"/>
+            <path d="M166 331 C174 336 182 344 179 352 C176 360 142 361 136 353 C133 349 137 340 144 335 Z" fill="${shoesColor}"/>
+            <path d="M82 351 C94 355 113 355 124 351" stroke="rgba(255,255,255,0.25)" stroke-width="2" fill="none"/>
+            <path d="M178 351 C166 355 147 355 136 351" stroke="rgba(255,255,255,0.25)" stroke-width="2" fill="none"/>
+          </g>
+        </svg>
+      `;
+    }
+
     function renderPreview() {
       const panel = document.getElementById("previewPanel");
       panel.innerHTML = "";
 
       if (!previewLook) {
-        panel.innerHTML = `<div class="empty" style="background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.15); color:#ddd;">No outfit preview yet.</div>`;
+        panel.innerHTML = `<div class="preview-empty">No outfit preview yet.</div>`;
         return;
       }
 
-      const items = previewLook.items || {};
-
-      const shirtColor = colorHex(items.shirt ? items.shirt.color : "recommended");
-      const pantsColor = colorHex(items.pants ? items.pants.color : "recommended");
-      const shoesColor = colorHex(items.shoes ? items.shoes.color : "recommended");
-      const outerwearColor = colorHex(items.outerwear ? items.outerwear.color : "recommended");
-      const hatColor = colorHex(items.hat ? items.hat.color : "recommended");
-
-      const svg = `
-        <svg width="100%" viewBox="0 0 260 420" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0" y="0" width="260" height="420" rx="24" fill="rgba(255,255,255,0.04)"/>
-          <circle cx="130" cy="58" r="28" fill="#e7c6a9"/>
-          <rect x="105" y="88" width="50" height="36" rx="12" fill="#e7c6a9"/>
-          ${items.hat ? `<ellipse cx="130" cy="36" rx="34" ry="10" fill="${hatColor}"/><rect x="104" y="18" width="52" height="18" rx="9" fill="${hatColor}"/>` : ""}
-
-          <rect x="80" y="118" width="100" height="110" rx="18" fill="${shirtColor}"/>
-          ${items.outerwear ? `<rect x="70" y="116" width="120" height="118" rx="20" fill="${outerwearColor}" opacity="0.82"/>` : ""}
-
-          <rect x="55" y="126" width="22" height="92" rx="10" fill="${items.outerwear ? outerwearColor : shirtColor}" opacity="0.95"/>
-          <rect x="183" y="126" width="22" height="92" rx="10" fill="${items.outerwear ? outerwearColor : shirtColor}" opacity="0.95"/>
-
-          <rect x="88" y="226" width="38" height="120" rx="12" fill="${pantsColor}"/>
-          <rect x="134" y="226" width="38" height="120" rx="12" fill="${pantsColor}"/>
-
-          <rect x="80" y="344" width="52" height="18" rx="8" fill="${shoesColor}"/>
-          <rect x="128" y="344" width="52" height="18" rx="8" fill="${shoesColor}"/>
-        </svg>
-      `;
-
-      const wrapper = document.createElement("div");
-      wrapper.innerHTML = svg;
-      panel.appendChild(wrapper);
+      const stage = document.createElement("div");
+      stage.className = "preview-stage";
+      stage.innerHTML = buildModelSVG(previewLook.items || {});
+      panel.appendChild(stage);
 
       const itemList = document.createElement("div");
-      itemList.className = "small";
-      itemList.style.color = "#e7e7e7";
-      itemList.style.marginTop = "10px";
+      itemList.className = "preview-items";
 
       let text = "";
-      Object.entries(items).forEach(([key, item]) => {
-        if (item) {
-          text += `${titleCase(key)}: ${item.name}\n`;
-        }
+      Object.entries(previewLook.items || {}).forEach(([key, item]) => {
+        if (item) text += `${titleCase(key)}: ${item.name}\n`;
       });
 
       itemList.innerText = text.trim();
@@ -1603,7 +1750,16 @@
       generateTransformations();
       renderWardrobeRecommendation();
       renderTransformationResults();
+
+      if (wardrobeResult) {
+        setPreview(wardrobeResult, "Best from wardrobe", "Based on what you already own");
+      }
     }
   </script>
 </body>
 </html>
+'''
+
+path = Path('/mnt/data/wardrobe_product_visual_fixed.html')
+path.write_text(html, encoding='utf-8')
+print(f"Created: {path}")
