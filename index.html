@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Wardrobe Outfit Picker</title>
+  <title>Wardrobe Product Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
+    :root {
+      --bg: #f4f1ec;
+      --card: #ffffff;
+      --text: #1f1f1f;
+      --muted: #6d6d6d;
+      --line: #e7e2da;
+      --accent: #202020;
+      --accent-2: #7b5e57;
+      --soft: #f8f6f2;
+      --chip: #f1ede7;
+      --danger: #7a1e2c;
+      --shadow: 0 10px 24px rgba(0,0,0,0.05);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      color: #111;
       margin: 0;
-      padding: 28px;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    h1, h2, h3, h4, p {
+      margin-top: 0;
     }
 
     .container {
+      max-width: 1440px;
+      margin: 0 auto;
       display: flex;
       gap: 24px;
-      max-width: 1400px;
-      margin: 0 auto;
+      align-items: flex-start;
     }
 
     .left {
@@ -28,258 +53,351 @@
     }
 
     .section {
-      background: #fff;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
       padding: 20px;
-      border-radius: 18px;
-      margin-top: 20px;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
     }
 
-    h1 {
-      margin-bottom: 8px;
+    .hero {
+      background: linear-gradient(135deg, #fffdf9, #f3ede4);
     }
 
-    h2 {
-      margin-top: 0;
+    .subtitle {
+      color: var(--muted);
+      line-height: 1.5;
     }
 
-    p {
-      color: #666;
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
     input, select, button {
-      padding: 11px;
-      margin: 6px 4px 6px 0;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+      border-radius: 12px;
+      border: 1px solid #d9d1c7;
+      padding: 11px 12px;
       font-size: 14px;
+      background: white;
     }
 
     input[type="text"] {
-      width: 220px;
+      min-width: 220px;
+      flex: 1;
     }
 
     button {
-      cursor: pointer;
-      background: #1e3a8a;
-      color: white;
       border: none;
+      cursor: pointer;
+      background: var(--accent);
+      color: white;
       font-weight: bold;
     }
 
     button:hover {
-      background: #172f70;
-    }
-
-    .danger {
-      background: #7a1e2c;
+      opacity: 0.92;
     }
 
     .secondary {
-      background: #374151;
+      background: #4e4e4e;
     }
 
-    ul {
-      padding-left: 0;
-      list-style: none;
+    .soft-btn {
+      background: var(--chip);
+      color: var(--text);
+      border: 1px solid var(--line);
     }
 
-    li {
-      background: #f9fafb;
-      margin: 10px 0;
+    .danger {
+      background: var(--danger);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .small {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .wardrobe-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .wardrobe-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
       padding: 12px;
-      border-radius: 14px;
-      border: 1px solid #eee;
-    }
-
-    .wardrobe-card {
+      background: var(--soft);
       display: flex;
       gap: 12px;
       align-items: flex-start;
     }
 
-    .item-photo {
-      width: 70px;
-      height: 70px;
+    .thumb {
+      width: 76px;
+      height: 76px;
       border-radius: 14px;
+      border: 1px solid var(--line);
       object-fit: cover;
-      background: #e5e7eb;
-      border: 1px solid #ddd;
+      background: #eee;
       flex-shrink: 0;
     }
 
-    .tag-row {
-      margin-top: 8px;
+    .thumb.placeholder {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--muted);
+      background: #efebe5;
     }
 
-    .tag {
+    .item-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .chip {
+      border: 1px solid #d5cdc2;
+      background: #ffffff;
       padding: 6px 9px;
       border-radius: 999px;
       font-size: 12px;
-      border: 1px solid #d1d5db;
-      background: #f9fafb;
       cursor: pointer;
     }
 
-    .tag.active {
-      background: #1e3a8a;
+    .chip.active {
+      background: var(--accent);
       color: white;
-      border-color: #1e3a8a;
+      border-color: var(--accent);
     }
 
-    .hero-board {
-      background: #111827;
+    .preview-card {
+      background: #151515;
       color: white;
-      padding: 24px;
-      border-radius: 22px;
-      margin-top: 20px;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      position: sticky;
+      top: 20px;
     }
 
-    .hero-board p {
-      color: #d1d5db;
+    .preview-card .muted {
+      color: #d7d7d7;
     }
 
-    .variation-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-      margin-top: 16px;
-    }
-
-    .variation-card {
-      background: white;
-      color: #111;
+    .preview-panel {
+      margin-top: 12px;
       border-radius: 18px;
-      padding: 16px;
+      padding: 12px;
+      background: rgba(255,255,255,0.08);
     }
 
-    .variation-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
-
-    .variation-title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .score-box {
+    .score-row {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-top: 12px;
+      margin: 10px 0 0 0;
     }
 
-    .score {
-      background: #eef2ff;
-      color: #1e3a8a;
-      padding: 10px 12px;
+    .score-chip {
+      background: rgba(255,255,255,0.12);
+      padding: 8px 12px;
       border-radius: 999px;
-      font-weight: bold;
       font-size: 13px;
+      font-weight: bold;
+    }
+
+    .result-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
     }
 
     .outfit-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
-      margin-top: 12px;
+      margin-top: 14px;
     }
 
-    .outfit-card {
-      background: #f9fafb;
-      color: #111;
+    .look-item-card {
+      border: 1px solid var(--line);
       border-radius: 16px;
+      background: var(--soft);
       padding: 10px;
-      border: 1px solid #eee;
     }
 
-    .outfit-card img {
+    .look-item-card img {
       width: 100%;
-      height: 120px;
+      height: 128px;
       object-fit: cover;
       border-radius: 12px;
-      background: #e5e7eb;
+      border: 1px solid var(--line);
+      background: #eee;
       margin-bottom: 8px;
     }
 
-    .placeholder {
+    .look-item-card .placeholder {
       width: 100%;
-      height: 120px;
+      height: 128px;
       border-radius: 12px;
-      background: #e5e7eb;
+      border: 1px solid var(--line);
+      background: #efebe5;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #6b7280;
+      color: var(--muted);
       margin-bottom: 8px;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .label {
       font-size: 11px;
-      color: #6b7280;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-bottom: 4px;
     }
 
-    .item-name {
+    .name {
       font-weight: bold;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
       margin-top: 4px;
-      font-size: 13px;
     }
 
-    .small {
-      font-size: 13px;
-      color: #666;
-      white-space: pre-wrap;
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
     }
 
-    .buy-grid {
+    .suggestion-list {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       margin-top: 12px;
     }
 
-    .buy-card {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 14px;
+    .suggestion-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--soft);
+      padding: 12px;
     }
 
-    .saved-look {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 14px;
+    .transformation-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .transformation-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .transformation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .saved-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--soft);
+      padding: 12px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 16px 0;
+    }
+
+    .empty {
+      border: 1px dashed #d8d0c5;
+      border-radius: 16px;
+      padding: 18px;
+      color: var(--muted);
+      background: #faf8f4;
+    }
+
+    a.shop-link {
+      display: inline-block;
       margin-top: 10px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--accent-2);
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width: 1100px) {
       .container {
         flex-direction: column;
       }
-
       .left, .right {
         width: 100%;
       }
+      .preview-card {
+        position: static;
+      }
+    }
 
-      .outfit-grid, .buy-grid {
+    @media (max-width: 760px) {
+      .outfit-grid,
+      .suggestion-list {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 600px) {
-      .outfit-grid, .buy-grid {
+    @media (max-width: 520px) {
+      .outfit-grid,
+      .suggestion-list {
         grid-template-columns: 1fr;
       }
     }
@@ -288,134 +406,190 @@
 
 <body>
   <div class="container">
-
     <div class="left">
-      <h1>Wardrobe Outfit Picker</h1>
-      <p>Build outfits from what you own, compare variations, and see what could improve the look.</p>
+      <div class="section hero">
+        <h1>Wardrobe Decision Engine</h1>
+        <p class="subtitle">
+          Upload what you own, generate your best wearable outfit, and explore from-scratch style transformations you can try on and save.
+        </p>
+      </div>
 
       <div class="section">
         <h2>Add Clothes</h2>
-
-        <input id="itemName" type="text" placeholder="e.g. Black Oxford Shirt">
-
-        <select id="category">
-          <option value="shirt">Shirt</option>
-          <option value="pants">Pants</option>
-          <option value="shoes">Shoes</option>
-          <option value="socks">Socks</option>
-          <option value="hat">Hat</option>
-          <option value="outerwear">Outerwear</option>
-        </select>
-
-        <select id="color">
-          <option value="black">Black</option>
-          <option value="white">White</option>
-          <option value="blue">Blue</option>
-          <option value="brown">Brown</option>
-          <option value="beige">Beige</option>
-          <option value="gray">Gray</option>
-          <option value="green">Green</option>
-          <option value="red">Red</option>
-        </select>
-
-        <input id="itemPhoto" type="file" accept="image/*">
-
-        <button onclick="addItem()">Add Item</button>
-
-        <p class="small">The app guesses styles automatically. You can correct them later on each wardrobe item.</p>
+        <div class="row">
+          <input id="itemName" type="text" placeholder="e.g. Black Oxford Shirt">
+          <select id="category">
+            <option value="shirt">Shirt / Top</option>
+            <option value="pants">Pants / Bottom</option>
+            <option value="shoes">Shoes</option>
+            <option value="outerwear">Outerwear</option>
+            <option value="hat">Hat</option>
+            <option value="socks">Socks</option>
+          </select>
+        </div>
+        <div class="row">
+          <input id="itemPhoto" type="file" accept="image/*">
+          <button onclick="addItem()">Add Item</button>
+        </div>
+        <p class="muted">
+          Color is auto-guessed. In a real product, this should come from backend image detection. For now, you can edit it later if the guess is wrong.
+        </p>
       </div>
 
       <div class="section">
-        <h2>Your Wardrobe</h2>
-        <button class="danger" onclick="clearWardrobe()">Clear Wardrobe</button>
-        <ul id="wardrobeList"></ul>
+        <div class="row" style="justify-content: space-between;">
+          <h2 style="margin-bottom: 0;">Your Wardrobe</h2>
+          <button class="danger" onclick="clearWardrobe()">Clear Wardrobe</button>
+        </div>
+        <div id="wardrobeList" class="wardrobe-list"></div>
       </div>
 
       <div class="section">
-        <h2>Recommendation Setting</h2>
+        <h2>Recommendation Settings</h2>
+        <div class="row">
+          <div>
+            <div class="muted">Style goal</div>
+            <select id="styleGoal">
+              <option value="casual">Casual</option>
+              <option value="elegant">Elegant</option>
+              <option value="streetwear">Streetwear</option>
+              <option value="geeky">Geeky</option>
+            </select>
+          </div>
 
-        <p>Style goal</p>
-        <select id="styleGoal">
-          <option value="casual">Casual</option>
-          <option value="elegant">Elegant</option>
-          <option value="streetwear">Streetwear</option>
-          <option value="geeky">Geeky</option>
-        </select>
+          <div>
+            <div class="muted">Occasion</div>
+            <select id="occasion">
+              <option value="casual hangout">Casual hangout</option>
+              <option value="work">Work</option>
+              <option value="date">Date</option>
+              <option value="wedding">Wedding</option>
+              <option value="travel">Travel</option>
+            </select>
+          </div>
+        </div>
 
-        <p>Occasion</p>
-        <select id="occasion">
-          <option value="casual hangout">Casual hangout</option>
-          <option value="work">Work</option>
-          <option value="date">Date</option>
-          <option value="wedding">Wedding</option>
-          <option value="travel">Travel</option>
-        </select>
-
-        <p>Strictness</p>
-        <select id="strictness">
-          <option value="wardrobeOnly">Use only my wardrobe</option>
-          <option value="completeLook">Use wardrobe + suggest missing item</option>
-          <option value="fromScratch">Build new style from scratch</option>
-        </select>
-
-        <br>
-        <button onclick="generateOutfits()">Generate 3 Options</button>
+        <div class="actions">
+          <button onclick="generateAllRecommendations()">Generate Recommendations</button>
+        </div>
       </div>
 
       <div class="section">
-        <h2>Saved Looks</h2>
-        <button class="danger" onclick="clearSavedLooks()">Clear Saved Looks</button>
-        <div id="savedLooks"></div>
+        <div class="row" style="justify-content: space-between;">
+          <h2 style="margin-bottom: 0;">Saved Looks</h2>
+          <button class="danger" onclick="clearSavedLooks()">Clear Saved Looks</button>
+        </div>
+        <div id="savedLooks" class="saved-list"></div>
       </div>
     </div>
 
     <div class="right">
-      <div class="hero-board">
-        <div class="label">Outfit Variations</div>
-        <h2 id="boardTitle">No outfit picked yet</h2>
-        <p id="boardSubtitle">Add clothes, choose a style, then generate your look.</p>
-
-        <div id="variationContainer" class="variation-grid"></div>
+      <div class="preview-card">
+        <div class="label" style="color:#d6d6d6;">Preview</div>
+        <h2 id="previewTitle">No look selected</h2>
+        <p id="previewSubtitle" class="muted">Generate recommendations, then click “Try On Full Look”.</p>
+        <div id="previewPanel" class="preview-panel"></div>
       </div>
 
       <div class="section">
-        <h2>Recommended to Buy</h2>
-        <p class="small">Mock recommendation cards for now. Later, this can become affiliate links or sponsored placements.</p>
-        <div id="buyCards" class="buy-grid"></div>
+        <h2>1. Best from Wardrobe</h2>
+        <div id="wardrobeRecommendation"></div>
+      </div>
+
+      <div class="section">
+        <h2>2. Style Transformation / From Scratch</h2>
+        <p class="muted">
+          Three from-scratch directions based on your selected style goal. Each can be regenerated, tried on, and saved independently.
+        </p>
+        <div id="transformationLooks" class="transformation-grid"></div>
       </div>
     </div>
-
   </div>
 
   <script>
-    let wardrobe = JSON.parse(localStorage.getItem("wardrobe")) || [];
-    let savedLooks = JSON.parse(localStorage.getItem("savedLooks")) || [];
-    let currentVariations = [];
+    const STORAGE_WARDROBE = "wardrobeRealV1";
+    const STORAGE_SAVED = "savedLooksRealV1";
+
+    let wardrobe = JSON.parse(localStorage.getItem(STORAGE_WARDROBE)) || [];
+    let savedLooks = JSON.parse(localStorage.getItem(STORAGE_SAVED)) || [];
+    let wardrobeResult = null;
+    let transformationResults = [];
+    let previewLook = null;
 
     const allStyles = ["casual", "elegant", "streetwear", "geeky"];
+    const allColors = ["black", "white", "blue", "brown", "beige", "gray", "green", "red"];
+
+    const colorHexMap = {
+      black: "#222222",
+      white: "#f3f3f3",
+      blue: "#5377a5",
+      brown: "#8b6a4e",
+      beige: "#d8c0a2",
+      gray: "#9a9a9a",
+      green: "#5b7b53",
+      red: "#a54b4b",
+      recommended: "#cfc6ba"
+    };
 
     showWardrobe();
     showSavedLooks();
+    renderPreview();
 
     function saveWardrobe() {
-      localStorage.setItem("wardrobe", JSON.stringify(wardrobe));
+      localStorage.setItem(STORAGE_WARDROBE, JSON.stringify(wardrobe));
     }
 
     function saveSavedLooks() {
-      localStorage.setItem("savedLooks", JSON.stringify(savedLooks));
+      localStorage.setItem(STORAGE_SAVED, JSON.stringify(savedLooks));
+    }
+
+    function randomId(prefix = "id") {
+      return prefix + "-" + Date.now() + "-" + Math.floor(Math.random() * 100000);
+    }
+
+    function titleCase(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function googleSearchUrl(query) {
+      return "https://www.google.com/search?q=" + encodeURIComponent(query);
+    }
+
+    function pickRandom(arr) {
+      if (!arr || arr.length === 0) return null;
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function detectColorFromName(name) {
+      const lower = name.toLowerCase();
+
+      if (lower.includes("black")) return "black";
+      if (lower.includes("white")) return "white";
+      if (lower.includes("blue") || lower.includes("navy")) return "blue";
+      if (lower.includes("brown")) return "brown";
+      if (lower.includes("beige") || lower.includes("cream") || lower.includes("khaki")) return "beige";
+      if (lower.includes("gray") || lower.includes("grey")) return "gray";
+      if (lower.includes("green") || lower.includes("olive")) return "green";
+      if (lower.includes("red") || lower.includes("burgundy") || lower.includes("maroon")) return "red";
+
+      return "black";
     }
 
     function detectStyles(name, category, color) {
-      let lowerName = name.toLowerCase();
-      let styles = [];
+      const lower = name.toLowerCase();
+      const styles = [];
 
       if (
-        lowerName.includes("oxford") ||
-        lowerName.includes("blazer") ||
-        lowerName.includes("loafers") ||
-        lowerName.includes("tailored") ||
-        lowerName.includes("chino") ||
-        lowerName.includes("dress") ||
+        lower.includes("oxford") ||
+        lower.includes("blazer") ||
+        lower.includes("loafers") ||
+        lower.includes("tailored") ||
+        lower.includes("chino") ||
+        lower.includes("dress") ||
         color === "beige" ||
         color === "brown"
       ) {
@@ -423,22 +597,23 @@
       }
 
       if (
-        lowerName.includes("oversized") ||
-        lowerName.includes("cargo") ||
-        lowerName.includes("hoodie") ||
-        lowerName.includes("sneakers") ||
-        lowerName.includes("chunky") ||
-        lowerName.includes("bomber") ||
+        lower.includes("oversized") ||
+        lower.includes("cargo") ||
+        lower.includes("hoodie") ||
+        lower.includes("chunky") ||
+        lower.includes("bomber") ||
+        lower.includes("street") ||
         color === "black"
       ) {
         styles.push("streetwear");
       }
 
       if (
-        lowerName.includes("checkered") ||
-        lowerName.includes("cardigan") ||
-        lowerName.includes("polo") ||
-        lowerName.includes("shirt") ||
+        lower.includes("cardigan") ||
+        lower.includes("checkered") ||
+        lower.includes("polo") ||
+        lower.includes("oxford") ||
+        lower.includes("shirt") ||
         color === "blue" ||
         color === "gray"
       ) {
@@ -446,11 +621,11 @@
       }
 
       if (
-        lowerName.includes("t-shirt") ||
-        lowerName.includes("tee") ||
-        lowerName.includes("jeans") ||
-        lowerName.includes("sneakers") ||
-        lowerName.includes("shorts") ||
+        lower.includes("tee") ||
+        lower.includes("t-shirt") ||
+        lower.includes("jeans") ||
+        lower.includes("sneakers") ||
+        lower.includes("casual") ||
         category === "socks"
       ) {
         styles.push("casual");
@@ -464,132 +639,70 @@
     }
 
     function addItem() {
-      let name = document.getElementById("itemName").value;
-      let category = document.getElementById("category").value;
-      let color = document.getElementById("color").value;
-      let photoInput = document.getElementById("itemPhoto");
+      const name = document.getElementById("itemName").value.trim();
+      const category = document.getElementById("category").value;
+      const photoInput = document.getElementById("itemPhoto");
 
-      if (name === "") {
-        alert("Please enter item name");
+      if (!name) {
+        alert("Please enter an item name.");
         return;
       }
 
+      const color = detectColorFromName(name);
+      const styles = detectStyles(name, category, color);
+
       if (photoInput.files && photoInput.files[0]) {
-        let reader = new FileReader();
-
+        const reader = new FileReader();
         reader.onload = function(event) {
-          saveNewItem(name, category, color, event.target.result);
+          saveNewItem(name, category, color, styles, event.target.result);
         };
-
         reader.readAsDataURL(photoInput.files[0]);
       } else {
-        saveNewItem(name, category, color, "");
+        saveNewItem(name, category, color, styles, "");
       }
     }
 
-    function saveNewItem(name, category, color, photo) {
-      let item = {
-        id: Date.now(),
-        name: name,
-        category: category,
-        color: color,
-        styles: detectStyles(name, category, color),
-        photo: photo
-      };
+    function saveNewItem(name, category, color, styles, photo) {
+      wardrobe.push({
+        id: randomId("wardrobe"),
+        name,
+        category,
+        color,
+        styles,
+        photo
+      });
 
-      wardrobe.push(item);
       saveWardrobe();
-
       document.getElementById("itemName").value = "";
       document.getElementById("itemPhoto").value = "";
       showWardrobe();
     }
 
-    function showWardrobe() {
-      let list = document.getElementById("wardrobeList");
-      list.innerHTML = "";
-
-      if (wardrobe.length === 0) {
-        let emptyItem = document.createElement("li");
-        emptyItem.innerText = "No items yet.";
-        list.appendChild(emptyItem);
-        return;
-      }
-
-      wardrobe.forEach(function(item, index) {
-        let listItem = document.createElement("li");
-
-        let wrapper = document.createElement("div");
-        wrapper.className = "wardrobe-card";
-
-        let img = document.createElement("img");
-        img.className = "item-photo";
-        img.src = item.photo || "";
-        img.alt = item.name;
-
-        let content = document.createElement("div");
-
-        let title = document.createElement("strong");
-        title.innerText = item.name;
-
-        let meta = document.createElement("div");
-        meta.className = "small";
-        meta.innerText = item.category + " · " + item.color;
-
-        let tagRow = document.createElement("div");
-        tagRow.className = "tag-row";
-
-        allStyles.forEach(function(style) {
-          let tag = document.createElement("span");
-          tag.className = item.styles.includes(style) ? "tag active" : "tag";
-          tag.innerText = style;
-
-          tag.onclick = function() {
-            toggleItemStyle(index, style);
-          };
-
-          tagRow.appendChild(tag);
-        });
-
-        let removeButton = document.createElement("button");
-        removeButton.className = "danger";
-        removeButton.innerText = "Remove";
-
-        removeButton.onclick = function() {
-          wardrobe.splice(index, 1);
-          saveWardrobe();
-          showWardrobe();
-        };
-
-        content.appendChild(title);
-        content.appendChild(meta);
-        content.appendChild(tagRow);
-        content.appendChild(removeButton);
-
-        wrapper.appendChild(img);
-        wrapper.appendChild(content);
-
-        listItem.appendChild(wrapper);
-        list.appendChild(listItem);
-      });
+    function updateItemColor(index, newColor) {
+      wardrobe[index].color = newColor;
+      saveWardrobe();
+      showWardrobe();
     }
 
     function toggleItemStyle(index, style) {
-      let item = wardrobe[index];
+      const item = wardrobe[index];
 
       if (item.styles.includes(style)) {
         if (item.styles.length === 1) {
-          alert("Each item needs at least one style.");
+          alert("Each item should keep at least one style.");
           return;
         }
-
-        item.styles = item.styles.filter(function(existingStyle) {
-          return existingStyle !== style;
-        });
+        item.styles = item.styles.filter(s => s !== style);
       } else {
         item.styles.push(style);
       }
 
+      saveWardrobe();
+      showWardrobe();
+    }
+
+    function removeWardrobeItem(index) {
+      wardrobe.splice(index, 1);
       saveWardrobe();
       showWardrobe();
     }
@@ -599,703 +712,827 @@
       saveWardrobe();
       showWardrobe();
 
-      currentVariations = [];
-      renderVariations();
+      wardrobeResult = null;
+      transformationResults = [];
+      previewLook = null;
 
-      document.getElementById("buyCards").innerHTML = "";
-      document.getElementById("boardTitle").innerText = "No outfit picked yet";
-      document.getElementById("boardSubtitle").innerText = "Add clothes, choose a style, then generate your look.";
+      renderWardrobeRecommendation();
+      renderTransformationResults();
+      renderPreview();
     }
 
-    function getItemsByCategory(category) {
-      return wardrobe.filter(function(item) {
-        return item.category === category;
-      });
-    }
+    function showWardrobe() {
+      const container = document.getElementById("wardrobeList");
+      container.innerHTML = "";
 
-    function shuffle(items) {
-      return [...items].sort(function() {
-        return Math.random() - 0.5;
+      if (wardrobe.length === 0) {
+        container.innerHTML = `<div class="empty">No wardrobe items yet.</div>`;
+        return;
+      }
+
+      wardrobe.forEach((item, index) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "wardrobe-item";
+
+        let thumb;
+        if (item.photo) {
+          thumb = document.createElement("img");
+          thumb.src = item.photo;
+          thumb.alt = item.name;
+          thumb.className = "thumb";
+        } else {
+          thumb = document.createElement("div");
+          thumb.className = "thumb placeholder";
+          thumb.innerText = "No photo";
+        }
+
+        const main = document.createElement("div");
+        main.className = "item-main";
+
+        const title = document.createElement("div");
+        title.className = "item-title";
+        title.innerText = item.name;
+
+        const meta = document.createElement("div");
+        meta.className = "small";
+        meta.innerText = `${titleCase(item.category)} · color: ${item.color}`;
+
+        const colorRow = document.createElement("div");
+        colorRow.className = "row";
+        colorRow.style.marginTop = "8px";
+
+        const colorLabel = document.createElement("div");
+        colorLabel.className = "small";
+        colorLabel.innerText = "Edit color:";
+
+        const colorSelect = document.createElement("select");
+        allColors.forEach(color => {
+          const option = document.createElement("option");
+          option.value = color;
+          option.innerText = titleCase(color);
+          if (item.color === color) option.selected = true;
+          colorSelect.appendChild(option);
+        });
+        colorSelect.onchange = function() {
+          updateItemColor(index, this.value);
+        };
+
+        colorRow.appendChild(colorLabel);
+        colorRow.appendChild(colorSelect);
+
+        const chipRow = document.createElement("div");
+        chipRow.className = "chip-row";
+        allStyles.forEach(style => {
+          const chip = document.createElement("span");
+          chip.className = item.styles.includes(style) ? "chip active" : "chip";
+          chip.innerText = style;
+          chip.onclick = function() {
+            toggleItemStyle(index, style);
+          };
+          chipRow.appendChild(chip);
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "danger";
+        removeBtn.innerText = "Remove";
+        removeBtn.onclick = function() {
+          removeWardrobeItem(index);
+        };
+
+        actions.appendChild(removeBtn);
+
+        main.appendChild(title);
+        main.appendChild(meta);
+        main.appendChild(colorRow);
+        main.appendChild(chipRow);
+        main.appendChild(actions);
+
+        wrapper.appendChild(thumb);
+        wrapper.appendChild(main);
+        container.appendChild(wrapper);
       });
     }
 
     function getStyleRecommendedColors(styleGoal) {
-      if (styleGoal === "elegant") {
-        return ["black", "white", "beige", "gray", "brown"];
-      }
-
-      if (styleGoal === "streetwear") {
-        return ["black", "white", "gray", "blue", "green"];
-      }
-
-      if (styleGoal === "geeky") {
-        return ["white", "blue", "brown", "gray", "beige"];
-      }
-
-      return ["black", "white", "blue", "brown", "beige", "gray", "green", "red"];
+      if (styleGoal === "elegant") return ["black", "white", "beige", "gray", "brown"];
+      if (styleGoal === "streetwear") return ["black", "white", "gray", "blue", "green"];
+      if (styleGoal === "geeky") return ["blue", "gray", "brown", "beige", "white"];
+      return ["white", "blue", "gray", "black", "beige"];
     }
 
-    function getOccasionPreferredCategories(occasion) {
+    function getOccasionRules(occasion) {
       if (occasion === "work") {
-        return ["shirt", "pants", "shoes", "outerwear"];
+        return {
+          core: ["shirt", "pants", "shoes"],
+          bonus: ["outerwear"],
+          avoidKeywords: ["cargo", "chunky", "graphic"]
+        };
       }
 
       if (occasion === "date") {
-        return ["shirt", "pants", "shoes", "outerwear"];
+        return {
+          core: ["shirt", "pants", "shoes"],
+          bonus: ["outerwear"],
+          avoidKeywords: []
+        };
       }
 
       if (occasion === "wedding") {
-        return ["shirt", "pants", "shoes", "outerwear"];
+        return {
+          core: ["shirt", "pants", "shoes"],
+          bonus: ["outerwear"],
+          avoidKeywords: ["sneakers", "hoodie", "cargo", "oversized"]
+        };
       }
 
       if (occasion === "travel") {
-        return ["shirt", "pants", "shoes", "hat"];
+        return {
+          core: ["shirt", "pants", "shoes"],
+          bonus: ["hat"],
+          avoidKeywords: []
+        };
       }
 
-      return ["shirt", "pants", "shoes"];
+      return {
+        core: ["shirt", "pants", "shoes"],
+        bonus: [],
+        avoidKeywords: []
+      };
     }
 
-    function getOccasionAvoidRules(occasion) {
-      if (occasion === "wedding") {
-        return ["sneakers", "hoodie", "cargo", "oversized"];
-      }
-
-      if (occasion === "work") {
-        return ["cargo", "oversized", "chunky"];
-      }
-
-      if (occasion === "date") {
-        return ["too casual"];
-      }
-
-      return [];
+    function itemHasOccasionPenalty(item, occasion) {
+      if (!item) return false;
+      const lower = item.name.toLowerCase();
+      const rules = getOccasionRules(occasion);
+      return rules.avoidKeywords.some(word => lower.includes(word));
     }
 
-    function itemHasAvoidKeyword(item, occasion) {
-      if (!item) {
-        return false;
-      }
-
-      let avoidWords = getOccasionAvoidRules(occasion);
-      let lowerName = item.name.toLowerCase();
-
-      return avoidWords.some(function(word) {
-        return lowerName.includes(word);
-      });
-    }
-
-    function scoreItem(item, styleGoal, occasion, personality) {
-      if (!item) {
-        return -999;
-      }
+    function scoreWardrobeItem(item, styleGoal, occasion) {
+      if (!item) return -999;
 
       let score = 0;
-      let recommendedColors = getStyleRecommendedColors(styleGoal);
+      const recommendedColors = getStyleRecommendedColors(styleGoal);
 
-      if (item.styles.includes(styleGoal)) {
-        score += 50;
-      }
+      if (item.styles.includes(styleGoal)) score += 55;
+      if (recommendedColors.includes(item.color)) score += 25;
+      if (itemHasOccasionPenalty(item, occasion)) score -= 40;
 
-      if (recommendedColors.includes(item.color)) {
-        score += 25;
-      }
-
-      if (itemHasAvoidKeyword(item, occasion)) {
-        score -= 35;
-      }
-
-      if (personality === "safe") {
-        if (["black", "white", "beige", "gray", "brown"].includes(item.color)) {
-          score += 15;
-        }
-      }
-
-      if (personality === "stylish") {
-        if (item.styles.includes(styleGoal)) {
-          score += 20;
-        }
-      }
-
-      if (personality === "bold") {
-        if (["black", "green", "red", "blue"].includes(item.color)) {
-          score += 12;
-        }
-      }
-
-      score += Math.floor(Math.random() * 15);
-
+      score += Math.floor(Math.random() * 10);
       return score;
     }
 
-    function pickBestItem(category, styleGoal, occasion, personality, usedIds) {
-      let items = getItemsByCategory(category).filter(function(item) {
-        return !usedIds.includes(item.id);
-      });
+    function pickBestWardrobeItem(category, styleGoal, occasion, usedIds = []) {
+      const candidates = wardrobe.filter(item => item.category === category && !usedIds.includes(item.id));
+      if (candidates.length === 0) return null;
 
-      if (items.length === 0) {
-        return null;
-      }
-
-      let sorted = shuffle(items).sort(function(a, b) {
-        return scoreItem(b, styleGoal, occasion, personality) - scoreItem(a, styleGoal, occasion, personality);
-      });
-
-      return sorted[0];
+      return shuffle(candidates).sort((a, b) => {
+        return scoreWardrobeItem(b, styleGoal, occasion) - scoreWardrobeItem(a, styleGoal, occasion);
+      })[0];
     }
 
-    function getBuySuggestion(styleGoal, category) {
-      let suggestions = {
+    function makeSuggestedItem(name, category, color, styleGoal, note = "") {
+      return {
+        id: randomId("suggested"),
+        name,
+        category,
+        color,
+        styles: [styleGoal],
+        photo: "",
+        note,
+        shopUrl: googleSearchUrl(name)
+      };
+    }
+
+    function getCatalog(styleGoal) {
+      const catalogs = {
+        casual: {
+          profiles: [
+            { title: "Clean Everyday", desc: "Simple, easy, and balanced. A safe casual starting point." },
+            { title: "Relaxed Weekend", desc: "Softer proportions and low-effort comfort without looking sloppy." },
+            { title: "Layered Casual", desc: "A slightly more styled casual look with one extra layer." }
+          ],
+          shirt: [
+            makeSuggestedItem("Plain white t-shirt", "shirt", "white", "casual"),
+            makeSuggestedItem("Light gray relaxed tee", "shirt", "gray", "casual"),
+            makeSuggestedItem("Blue casual overshirt", "shirt", "blue", "casual")
+          ],
+          pants: [
+            makeSuggestedItem("Blue straight jeans", "pants", "blue", "casual"),
+            makeSuggestedItem("Beige relaxed chinos", "pants", "beige", "casual"),
+            makeSuggestedItem("Gray casual trousers", "pants", "gray", "casual")
+          ],
+          shoes: [
+            makeSuggestedItem("White everyday sneakers", "shoes", "white", "casual"),
+            makeSuggestedItem("Black clean sneakers", "shoes", "black", "casual"),
+            makeSuggestedItem("Brown casual loafers", "shoes", "brown", "casual")
+          ],
+          outerwear: [
+            makeSuggestedItem("Blue denim jacket", "outerwear", "blue", "casual"),
+            makeSuggestedItem("Beige lightweight overshirt", "outerwear", "beige", "casual"),
+            makeSuggestedItem("Gray zip jacket", "outerwear", "gray", "casual")
+          ],
+          hat: [
+            makeSuggestedItem("Casual black cap", "hat", "black", "casual"),
+            makeSuggestedItem("Beige casual cap", "hat", "beige", "casual"),
+            makeSuggestedItem("Blue cap", "hat", "blue", "casual")
+          ]
+        },
         elegant: {
-          shirt: "White oxford shirt",
-          pants: "Black tailored pants",
-          shoes: "Brown loafers",
-          outerwear: "Navy blazer",
-          hat: "Minimal wool cap"
+          profiles: [
+            { title: "Sharp Minimal", desc: "Clean lines, minimal palette, and polished essentials." },
+            { title: "Soft Tailored", desc: "A slightly warmer, softer interpretation of elegant dressing." },
+            { title: "Night Out Polished", desc: "A more elevated, evening-friendly elegant combination." }
+          ],
+          shirt: [
+            makeSuggestedItem("White oxford shirt", "shirt", "white", "elegant"),
+            makeSuggestedItem("Beige premium knit polo", "shirt", "beige", "elegant"),
+            makeSuggestedItem("Black refined shirt", "shirt", "black", "elegant")
+          ],
+          pants: [
+            makeSuggestedItem("Black tailored pants", "pants", "black", "elegant"),
+            makeSuggestedItem("Gray pleated trousers", "pants", "gray", "elegant"),
+            makeSuggestedItem("Brown tailored trousers", "pants", "brown", "elegant")
+          ],
+          shoes: [
+            makeSuggestedItem("Brown loafers", "shoes", "brown", "elegant"),
+            makeSuggestedItem("Black leather derbies", "shoes", "black", "elegant"),
+            makeSuggestedItem("Dark brown dress loafers", "shoes", "brown", "elegant")
+          ],
+          outerwear: [
+            makeSuggestedItem("Navy blazer", "outerwear", "blue", "elegant"),
+            makeSuggestedItem("Beige tailored blazer", "outerwear", "beige", "elegant"),
+            makeSuggestedItem("Black lightweight blazer", "outerwear", "black", "elegant")
+          ],
+          hat: [
+            makeSuggestedItem("Minimal wool cap", "hat", "gray", "elegant"),
+            makeSuggestedItem("Structured black cap", "hat", "black", "elegant"),
+            makeSuggestedItem("Minimal beige cap", "hat", "beige", "elegant")
+          ]
         },
         streetwear: {
-          shirt: "Oversized black t-shirt",
-          pants: "Cargo pants",
-          shoes: "Chunky sneakers",
-          outerwear: "Bomber jacket",
-          hat: "Black cap"
+          profiles: [
+            { title: "Clean Street", desc: "Streetwear with a cleaner silhouette and easy color control." },
+            { title: "Utility Street", desc: "More functional shapes and workwear-inspired pieces." },
+            { title: "Bold Street", desc: "A more expressive look with stronger visual attitude." }
+          ],
+          shirt: [
+            makeSuggestedItem("Oversized black t-shirt", "shirt", "black", "streetwear"),
+            makeSuggestedItem("Graphic white tee", "shirt", "white", "streetwear"),
+            makeSuggestedItem("Green streetwear hoodie", "shirt", "green", "streetwear")
+          ],
+          pants: [
+            makeSuggestedItem("Black cargo pants", "pants", "black", "streetwear"),
+            makeSuggestedItem("Gray wide leg pants", "pants", "gray", "streetwear"),
+            makeSuggestedItem("Green utility cargos", "pants", "green", "streetwear")
+          ],
+          shoes: [
+            makeSuggestedItem("Chunky sneakers", "shoes", "white", "streetwear"),
+            makeSuggestedItem("Black skate sneakers", "shoes", "black", "streetwear"),
+            makeSuggestedItem("Retro basketball sneakers", "shoes", "blue", "streetwear")
+          ],
+          outerwear: [
+            makeSuggestedItem("Bomber jacket", "outerwear", "black", "streetwear"),
+            makeSuggestedItem("Utility overshirt", "outerwear", "green", "streetwear"),
+            makeSuggestedItem("Streetwear zip hoodie", "outerwear", "gray", "streetwear")
+          ],
+          hat: [
+            makeSuggestedItem("Black cap", "hat", "black", "streetwear"),
+            makeSuggestedItem("Beanie", "hat", "gray", "streetwear"),
+            makeSuggestedItem("Green fitted cap", "hat", "green", "streetwear")
+          ]
         },
         geeky: {
-          shirt: "Clean checkered shirt",
-          pants: "Straight chino pants",
-          shoes: "Simple white sneakers",
-          outerwear: "Light cardigan",
-          hat: "Simple cap"
-        },
-        casual: {
-          shirt: "Plain white t-shirt",
-          pants: "Blue jeans",
-          shoes: "White sneakers",
-          outerwear: "Denim jacket",
-          hat: "Casual cap"
+          profiles: [
+            { title: "Smart Campus", desc: "A neat, approachable intellectual look that still feels wearable." },
+            { title: "Soft Intellectual", desc: "A warmer and softer version with bookish charm." },
+            { title: "Retro Nerd", desc: "A more character-driven take with stronger geeky cues." }
+          ],
+          shirt: [
+            makeSuggestedItem("Blue oxford shirt", "shirt", "blue", "geeky"),
+            makeSuggestedItem("Checkered button-up shirt", "shirt", "gray", "geeky"),
+            makeSuggestedItem("Brown knit polo", "shirt", "brown", "geeky")
+          ],
+          pants: [
+            makeSuggestedItem("Beige chinos", "pants", "beige", "geeky"),
+            makeSuggestedItem("Gray straight trousers", "pants", "gray", "geeky"),
+            makeSuggestedItem("Brown corduroy pants", "pants", "brown", "geeky")
+          ],
+          shoes: [
+            makeSuggestedItem("Simple white sneakers", "shoes", "white", "geeky"),
+            makeSuggestedItem("Brown penny loafers", "shoes", "brown", "geeky"),
+            makeSuggestedItem("Black minimal derbies", "shoes", "black", "geeky")
+          ],
+          outerwear: [
+            makeSuggestedItem("Light cardigan", "outerwear", "gray", "geeky"),
+            makeSuggestedItem("Brown knitted cardigan", "outerwear", "brown", "geeky"),
+            makeSuggestedItem("Navy lightweight blazer", "outerwear", "blue", "geeky")
+          ],
+          hat: [
+            makeSuggestedItem("Minimal campus cap", "hat", "blue", "geeky"),
+            makeSuggestedItem("Soft gray cap", "hat", "gray", "geeky"),
+            makeSuggestedItem("Brown cap", "hat", "brown", "geeky")
+          ]
         }
       };
 
-      return suggestions[styleGoal][category] || "Versatile basic item";
+      return catalogs[styleGoal];
     }
 
-    function fakeItem(name, category, styleGoal) {
-      return {
-        id: "buy-" + category + "-" + Date.now() + Math.random(),
-        name: name,
-        category: category,
-        color: "recommended",
-        styles: [styleGoal],
-        photo: ""
-      };
-    }
-
-    function getFromScratchOutfit(styleGoal) {
-      return {
-        shirt: fakeItem(getBuySuggestion(styleGoal, "shirt"), "shirt", styleGoal),
-        pants: fakeItem(getBuySuggestion(styleGoal, "pants"), "pants", styleGoal),
-        shoes: fakeItem(getBuySuggestion(styleGoal, "shoes"), "shoes", styleGoal),
-        outerwear: fakeItem(getBuySuggestion(styleGoal, "outerwear"), "outerwear", styleGoal)
-      };
-    }
-
-    function evaluateItem(item, styleGoal) {
-      if (!item) {
-        return false;
-      }
-
-      let recommendedColors = getStyleRecommendedColors(styleGoal);
-
-      if (item.styles && item.styles.includes(styleGoal)) {
-        return true;
-      }
-
-      if (recommendedColors.includes(item.color)) {
-        return true;
-      }
-
-      if (item.color === "recommended") {
-        return true;
-      }
-
-      return false;
-    }
-
-    function calculateScores(items, styleGoal, occasion) {
-      let itemList = Object.values(items).filter(Boolean);
-
+    function computeLookScores(items, styleGoal, occasion) {
+      const itemList = Object.values(items).filter(Boolean);
       if (itemList.length === 0) {
         return {
-          styleScore: 0,
-          colorScore: 0,
-          completenessScore: 0,
-          totalScore: 0
+          total: 0,
+          style: 0,
+          color: 0,
+          completeness: 0
         };
       }
 
-      let styleMatches = itemList.filter(function(item) {
-        return item.styles && item.styles.includes(styleGoal);
-      }).length;
+      const recommendedColors = getStyleRecommendedColors(styleGoal);
+      const occasionRules = getOccasionRules(occasion);
 
-      let recommendedColors = getStyleRecommendedColors(styleGoal);
+      const styleMatches = itemList.filter(item => item.styles.includes(styleGoal)).length;
+      const colorMatches = itemList.filter(item => recommendedColors.includes(item.color) || item.color === "recommended").length;
+      const categories = itemList.map(item => item.category);
+      const requiredMatches = occasionRules.core.filter(cat => categories.includes(cat)).length;
+      const penalties = itemList.filter(item => itemHasOccasionPenalty(item, occasion)).length;
 
-      let colorMatches = itemList.filter(function(item) {
-        return recommendedColors.includes(item.color) || item.color === "recommended";
-      }).length;
+      const styleScore = Math.round((styleMatches / itemList.length) * 100);
+      const colorScore = Math.round((colorMatches / itemList.length) * 100);
+      const completenessScore = Math.round((requiredMatches / occasionRules.core.length) * 100);
+      const total = Math.max(0, Math.round((styleScore + colorScore + completenessScore) / 3) - penalties * 10);
 
-      let neededCategories = getOccasionPreferredCategories(occasion);
+      return {
+        total,
+        style: styleScore,
+        color: colorScore,
+        completeness: completenessScore
+      };
+    }
 
-      let availableCategories = itemList.map(function(item) {
-        return item.category;
+    function generateBestFromWardrobe() {
+      const styleGoal = document.getElementById("styleGoal").value;
+      const occasion = document.getElementById("occasion").value;
+      const usedIds = [];
+
+      const shirt = pickBestWardrobeItem("shirt", styleGoal, occasion, usedIds);
+      if (shirt) usedIds.push(shirt.id);
+
+      const pants = pickBestWardrobeItem("pants", styleGoal, occasion, usedIds);
+      if (pants) usedIds.push(pants.id);
+
+      const shoes = pickBestWardrobeItem("shoes", styleGoal, occasion, usedIds);
+      if (shoes) usedIds.push(shoes.id);
+
+      const occasionRules = getOccasionRules(occasion);
+      let outerwear = null;
+      if (occasionRules.bonus.includes("outerwear")) {
+        outerwear = pickBestWardrobeItem("outerwear", styleGoal, occasion, usedIds);
+      }
+
+      const items = { shirt, pants, shoes, outerwear };
+      const scores = computeLookScores(items, styleGoal, occasion);
+
+      const catalog = getCatalog(styleGoal);
+      const suggestions = [];
+
+      if (!shirt) suggestions.push(catalog.shirt[0]);
+      if (!pants) suggestions.push(catalog.pants[0]);
+      if (!shoes) suggestions.push(catalog.shoes[0]);
+
+      if (outerwear === null && occasionRules.bonus.includes("outerwear")) {
+        suggestions.push(catalog.outerwear[0]);
+      }
+
+      if (shirt && !shirt.styles.includes(styleGoal)) suggestions.push(catalog.shirt[1] || catalog.shirt[0]);
+      if (pants && !pants.styles.includes(styleGoal)) suggestions.push(catalog.pants[1] || catalog.pants[0]);
+      if (shoes && !shoes.styles.includes(styleGoal)) suggestions.push(catalog.shoes[1] || catalog.shoes[0]);
+
+      const uniqueSuggestions = [];
+      const namesSeen = new Set();
+
+      suggestions.forEach(item => {
+        if (!namesSeen.has(item.name)) {
+          namesSeen.add(item.name);
+          uniqueSuggestions.push(item);
+        }
       });
 
-      let completenessMatches = neededCategories.filter(function(category) {
-        return availableCategories.includes(category);
-      }).length;
+      let explanation = "This recommendation prioritizes pieces you already own.";
+      if (!shirt || !pants || !shoes) {
+        explanation += "\n\nYour wardrobe is missing at least one core category, so the app is suggesting the most useful pieces to complete the outfit.";
+      } else if (uniqueSuggestions.length > 0) {
+        explanation += "\n\nYou can already wear this look, but the suggested missing pieces would make it stronger or better aligned to your selected style.";
+      } else {
+        explanation += "\n\nYour current wardrobe already supports this look quite well.";
+      }
 
-      let occasionPenalty = itemList.filter(function(item) {
-        return itemHasAvoidKeyword(item, occasion);
-      }).length * 10;
+      wardrobeResult = {
+        id: randomId("wardrobeResult"),
+        type: "wardrobe",
+        title: "Best from your wardrobe",
+        description: "The strongest wearable outfit from what you already own, plus any high-impact missing pieces.",
+        items,
+        scores,
+        suggestions: uniqueSuggestions,
+        explanation
+      };
+    }
 
-      let styleScore = Math.round((styleMatches / itemList.length) * 100);
-      let colorScore = Math.round((colorMatches / itemList.length) * 100);
-      let completenessScore = Math.round((completenessMatches / neededCategories.length) * 100);
-      let totalScore = Math.max(0, Math.round((styleScore + colorScore + completenessScore) / 3) - occasionPenalty);
+    function generateOneTransformation(index) {
+      const styleGoal = document.getElementById("styleGoal").value;
+      const occasion = document.getElementById("occasion").value;
+      const catalog = getCatalog(styleGoal);
+      const profile = catalog.profiles[index];
+
+      const shirtOptions = shuffle(catalog.shirt);
+      const pantsOptions = shuffle(catalog.pants);
+      const shoesOptions = shuffle(catalog.shoes);
+      const outerwearOptions = shuffle(catalog.outerwear);
+
+      const shirt = shirtOptions[index % shirtOptions.length];
+      const pants = pantsOptions[(index + 1 + Math.floor(Math.random() * pantsOptions.length)) % pantsOptions.length];
+      const shoes = shoesOptions[(index + 2 + Math.floor(Math.random() * shoesOptions.length)) % shoesOptions.length];
+
+      const occasionRules = getOccasionRules(occasion);
+      let outerwear = null;
+      if (occasionRules.bonus.includes("outerwear") || styleGoal !== "casual") {
+        outerwear = outerwearOptions[(index + Math.floor(Math.random() * outerwearOptions.length)) % outerwearOptions.length];
+      }
+
+      const items = { shirt, pants, shoes, outerwear };
+      const scores = computeLookScores(items, styleGoal, occasion);
 
       return {
-        styleScore: styleScore,
-        colorScore: colorScore,
-        completenessScore: completenessScore,
-        totalScore: totalScore
+        id: randomId("transform"),
+        type: "transform",
+        title: profile.title,
+        description: profile.desc,
+        items,
+        scores,
+        suggestions: [shirt, pants, shoes].concat(outerwear ? [outerwear] : []),
+        explanation:
+          "This look ignores your current wardrobe and builds a fresh style direction from scratch. Use it when you want to move toward a new aesthetic, not just optimize what you already own."
       };
     }
 
-    function generateOneVariation(personality) {
-      let styleGoal = document.getElementById("styleGoal").value;
-      let occasion = document.getElementById("occasion").value;
-      let strictness = document.getElementById("strictness").value;
-
-      if (strictness === "fromScratch") {
-        let scratch = getFromScratchOutfit(styleGoal);
-        let scores = calculateScores(scratch, styleGoal, occasion);
-
-        return {
-          personality: personality,
-          items: scratch,
-          scores: scores,
-          buySuggestions: [
-            "Shirt: " + scratch.shirt.name,
-            "Pants: " + scratch.pants.name,
-            "Shoes: " + scratch.shoes.name,
-            "Outerwear: " + scratch.outerwear.name
-          ],
-          explanation: "This option is built from scratch and ignores your current wardrobe. Use this when you want to change style direction completely."
-        };
-      }
-
-      let usedIds = [];
-
-      let shirt = pickBestItem("shirt", styleGoal, occasion, personality, usedIds);
-      if (shirt) {
-        usedIds.push(shirt.id);
-      }
-
-      let pants = pickBestItem("pants", styleGoal, occasion, personality, usedIds);
-      if (pants) {
-        usedIds.push(pants.id);
-      }
-
-      let shoes = pickBestItem("shoes", styleGoal, occasion, personality, usedIds);
-      if (shoes) {
-        usedIds.push(shoes.id);
-      }
-
-      let outerwear = pickBestItem("outerwear", styleGoal, occasion, personality, usedIds);
-      if (outerwear) {
-        usedIds.push(outerwear.id);
-      }
-
-      let hat = pickBestItem("hat", styleGoal, occasion, personality, usedIds);
-      if (hat) {
-        usedIds.push(hat.id);
-      }
-
-      let socks = pickBestItem("socks", styleGoal, occasion, personality, usedIds);
-
-      let items = {
-        shirt: shirt,
-        pants: pants,
-        shoes: shoes,
-        outerwear: outerwear,
-        hat: hat,
-        socks: socks
-      };
-
-      let buySuggestions = [];
-
-      if (!shirt) {
-        buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
-      }
-
-      if (!pants) {
-        buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
-      }
-
-      if (!shoes) {
-        buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
-      }
-
-      if (strictness === "completeLook") {
-        if (shirt && !evaluateItem(shirt, styleGoal)) {
-          buySuggestions.push("Shirt: " + getBuySuggestion(styleGoal, "shirt"));
-        }
-
-        if (pants && !evaluateItem(pants, styleGoal)) {
-          buySuggestions.push("Pants: " + getBuySuggestion(styleGoal, "pants"));
-        }
-
-        if (shoes && !evaluateItem(shoes, styleGoal)) {
-          buySuggestions.push("Shoes: " + getBuySuggestion(styleGoal, "shoes"));
-        }
-
-        if (!outerwear && styleGoal !== "casual") {
-          buySuggestions.push("Outerwear: " + getBuySuggestion(styleGoal, "outerwear"));
-        }
-      }
-
-      if (strictness === "wardrobeOnly") {
-        buySuggestions = [];
-      }
-
-      let scores = calculateScores(items, styleGoal, occasion);
-
-      return {
-        personality: personality,
-        items: items,
-        scores: scores,
-        buySuggestions: buySuggestions,
-        explanation: buildExplanation(personality, items, buySuggestions, scores, styleGoal, occasion, strictness)
-      };
-    }
-
-    function buildExplanation(personality, items, buySuggestions, scores, styleGoal, occasion, strictness) {
-      let text = "";
-
-      if (personality === "safe") {
-        text += "Safe option: this prioritizes neutral, easy-to-wear pieces.\n\n";
-      }
-
-      if (personality === "stylish") {
-        text += "Stylish option: this prioritizes stronger style match.\n\n";
-      }
-
-      if (personality === "bold") {
-        text += "Bolder option: this allows slightly more expressive choices.\n\n";
-      }
-
-      text += "Score: " + scores.totalScore + "% total, " + scores.styleScore + "% style, " + scores.colorScore + "% color, " + scores.completenessScore + "% completeness.\n\n";
-
-      if (!items.shirt || !items.pants || !items.shoes) {
-        text += "This is not a complete outfit yet because one or more core pieces are missing.\n";
-      } else {
-        text += "This can work as a complete outfit using your wardrobe.\n";
-      }
-
-      if (strictness === "wardrobeOnly") {
-        text += "\nWardrobe-only mode is active, so the app will not suggest items to buy.";
-      } else if (buySuggestions.length > 0) {
-        text += "\nTo improve this look, consider adding:\n";
-
-        buySuggestions.forEach(function(suggestion) {
-          text += "- " + suggestion + "\n";
-        });
-      } else {
-        text += "\nNo buy recommendation needed for this option.";
-      }
-
-      return text;
-    }
-
-    function generateOutfits() {
-      let styleGoal = document.getElementById("styleGoal").value;
-      let occasion = document.getElementById("occasion").value;
-
-      currentVariations = [
-        generateOneVariation("safe"),
-        generateOneVariation("stylish"),
-        generateOneVariation("bold")
+    function generateTransformations() {
+      transformationResults = [
+        generateOneTransformation(0),
+        generateOneTransformation(1),
+        generateOneTransformation(2)
       ];
-
-      document.getElementById("boardTitle").innerText =
-        styleGoal.charAt(0).toUpperCase() + styleGoal.slice(1) + " options for " + occasion;
-
-      document.getElementById("boardSubtitle").innerText =
-        "Compare 3 outfit directions, then save the one you like.";
-
-      renderVariations();
-      renderCombinedBuySuggestions();
     }
 
-    function regenerateVariation(index) {
-      let personality = currentVariations[index].personality;
-      currentVariations[index] = generateOneVariation(personality);
-
-      renderVariations();
-      renderCombinedBuySuggestions();
+    function regenerateTransformation(index) {
+      transformationResults[index] = generateOneTransformation(index);
+      renderTransformationResults();
     }
 
-    function renderVariations() {
-      let container = document.getElementById("variationContainer");
-      container.innerHTML = "";
-
-      if (currentVariations.length === 0) {
-        return;
-      }
-
-      currentVariations.forEach(function(variation, index) {
-        let card = document.createElement("div");
-        card.className = "variation-card";
-
-        let header = document.createElement("div");
-        header.className = "variation-header";
-
-        let title = document.createElement("div");
-        title.innerHTML =
-          '<div class="variation-title">Option ' + (index + 1) + ': ' + capitalize(variation.personality) + '</div>' +
-          '<div class="small">Total score: ' + variation.scores.totalScore + '%</div>';
-
-        let actions = document.createElement("div");
-
-        let regenButton = document.createElement("button");
-        regenButton.className = "secondary";
-        regenButton.innerText = "Regenerate";
-
-        regenButton.onclick = function() {
-          regenerateVariation(index);
-        };
-
-        let saveButton = document.createElement("button");
-        saveButton.innerText = "Save Look";
-
-        saveButton.onclick = function() {
-          saveLook(index);
-        };
-
-        let promptButton = document.createElement("button");
-        promptButton.className = "secondary";
-        promptButton.innerText = "Generate Model Prompt";
-
-        promptButton.onclick = function() {
-          generateModelPrompt(index);
-        };
-
-        actions.appendChild(regenButton);
-        actions.appendChild(saveButton);
-        actions.appendChild(promptButton);
-
-        header.appendChild(title);
-        header.appendChild(actions);
-
-        let scoreBox = document.createElement("div");
-        scoreBox.className = "score-box";
-
-        scoreBox.innerHTML =
-          '<span class="score">Style: ' + variation.scores.styleScore + '%</span>' +
-          '<span class="score">Color: ' + variation.scores.colorScore + '%</span>' +
-          '<span class="score">Complete: ' + variation.scores.completenessScore + '%</span>';
-
-        let outfitGrid = document.createElement("div");
-        outfitGrid.className = "outfit-grid";
-
-        Object.keys(variation.items).forEach(function(key) {
-          let item = variation.items[key];
-
-          if (item) {
-            outfitGrid.appendChild(createOutfitCard(item, capitalize(key)));
-          }
-        });
-
-        let explanation = document.createElement("p");
-        explanation.className = "small";
-        explanation.innerText = variation.explanation;
-
-        card.appendChild(header);
-        card.appendChild(scoreBox);
-        card.appendChild(outfitGrid);
-        card.appendChild(explanation);
-
-        container.appendChild(card);
-      });
-    }
-
-    function createOutfitCard(item, label) {
-      let card = document.createElement("div");
-      card.className = "outfit-card";
+    function createLookItemCard(item, label) {
+      const card = document.createElement("div");
+      card.className = "look-item-card";
 
       if (item.photo) {
-        let image = document.createElement("img");
-        image.src = item.photo;
-        image.alt = item.name;
-        card.appendChild(image);
+        const img = document.createElement("img");
+        img.src = item.photo;
+        img.alt = item.name;
+        card.appendChild(img);
       } else {
-        let placeholder = document.createElement("div");
+        const placeholder = document.createElement("div");
         placeholder.className = "placeholder";
         placeholder.innerText = "No photo";
         card.appendChild(placeholder);
       }
 
-      let labelEl = document.createElement("div");
+      const labelEl = document.createElement("div");
       labelEl.className = "label";
       labelEl.innerText = label;
 
-      let name = document.createElement("div");
-      name.className = "item-name";
-      name.innerText = item.name;
+      const nameEl = document.createElement("div");
+      nameEl.className = "name";
+      nameEl.innerText = item.name;
 
-      let details = document.createElement("p");
-      details.className = "small";
-      details.innerText = item.color + " · " + (item.styles ? item.styles.join(", ") : "recommended");
+      const metaEl = document.createElement("div");
+      metaEl.className = "meta";
+      metaEl.innerText = `${item.color} · ${item.styles.join(", ")}`;
 
       card.appendChild(labelEl);
-      card.appendChild(name);
-      card.appendChild(details);
+      card.appendChild(nameEl);
+      card.appendChild(metaEl);
 
       return card;
     }
 
-    function renderCombinedBuySuggestions() {
-      let allSuggestions = [];
+    function createSuggestionCard(item) {
+      const card = document.createElement("div");
+      card.className = "suggestion-card";
 
-      currentVariations.forEach(function(variation) {
-        variation.buySuggestions.forEach(function(suggestion) {
-          if (!allSuggestions.includes(suggestion)) {
-            allSuggestions.push(suggestion);
-          }
-        });
-      });
+      const label = document.createElement("div");
+      label.className = "label";
+      label.innerText = titleCase(item.category);
 
-      displayBuyCards(allSuggestions);
+      const title = document.createElement("div");
+      title.className = "name";
+      title.innerText = item.name;
+
+      const desc = document.createElement("div");
+      desc.className = "meta";
+      desc.innerText = `${item.color} · ${item.styles.join(", ")}`;
+
+      const link = document.createElement("a");
+      link.className = "shop-link";
+      link.href = item.shopUrl || googleSearchUrl(item.name);
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.innerText = "Search this item";
+
+      card.appendChild(label);
+      card.appendChild(title);
+      card.appendChild(desc);
+      card.appendChild(link);
+
+      return card;
     }
 
-    function displayBuyCards(suggestions) {
-      let container = document.getElementById("buyCards");
+    function renderWardrobeRecommendation() {
+      const container = document.getElementById("wardrobeRecommendation");
       container.innerHTML = "";
 
-      if (suggestions.length === 0) {
-        container.innerHTML = "<p class='small'>No buy recommendation needed yet.</p>";
+      if (!wardrobeResult) {
+        container.innerHTML = `<div class="empty">Generate recommendations to see your best wardrobe-based outfit.</div>`;
         return;
       }
 
-      suggestions.forEach(function(suggestion) {
-        let card = document.createElement("div");
-        card.className = "buy-card";
+      const card = document.createElement("div");
+      card.className = "result-card";
 
-        let title = document.createElement("strong");
-        title.innerText = suggestion;
+      const title = document.createElement("h3");
+      title.innerText = wardrobeResult.title;
 
-        let text = document.createElement("p");
-        text.className = "small";
-        text.innerText = "Suggested to strengthen one or more outfit options. Later this can link to real products.";
+      const desc = document.createElement("p");
+      desc.className = "muted";
+      desc.innerText = wardrobeResult.description;
 
-        let button = document.createElement("button");
-        button.innerText = "View options";
+      const scoreRow = document.createElement("div");
+      scoreRow.className = "score-row";
+      scoreRow.innerHTML = `
+        <span class="score-chip">Total: ${wardrobeResult.scores.total}%</span>
+        <span class="score-chip">Style: ${wardrobeResult.scores.style}%</span>
+        <span class="score-chip">Color: ${wardrobeResult.scores.color}%</span>
+        <span class="score-chip">Completeness: ${wardrobeResult.scores.completeness}%</span>
+      `;
 
-        button.onclick = function() {
-          alert("Later this can open affiliate or sponsored product options.");
+      const grid = document.createElement("div");
+      grid.className = "outfit-grid";
+
+      Object.entries(wardrobeResult.items).forEach(([key, item]) => {
+        if (item) grid.appendChild(createLookItemCard(item, titleCase(key)));
+      });
+
+      const explanation = document.createElement("div");
+      explanation.className = "small";
+      explanation.style.marginTop = "14px";
+      explanation.innerText = wardrobeResult.explanation;
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const tryOnBtn = document.createElement("button");
+      tryOnBtn.innerText = "Try On Full Look";
+      tryOnBtn.onclick = function() {
+        setPreview(wardrobeResult, "Best from wardrobe", "Based on what you already own");
+      };
+
+      const saveBtn = document.createElement("button");
+      saveBtn.className = "secondary";
+      saveBtn.innerText = "Save Look";
+      saveBtn.onclick = function() {
+        saveLook(wardrobeResult, "Best from wardrobe");
+      };
+
+      actions.appendChild(tryOnBtn);
+      actions.appendChild(saveBtn);
+
+      card.appendChild(title);
+      card.appendChild(desc);
+      card.appendChild(scoreRow);
+      card.appendChild(grid);
+      card.appendChild(explanation);
+      card.appendChild(actions);
+
+      if (wardrobeResult.suggestions.length > 0) {
+        const divider = document.createElement("div");
+        divider.className = "divider";
+
+        const missingTitle = document.createElement("h4");
+        missingTitle.innerText = "Suggested missing / upgrade pieces";
+
+        const suggestionList = document.createElement("div");
+        suggestionList.className = "suggestion-list";
+
+        wardrobeResult.suggestions.forEach(item => {
+          suggestionList.appendChild(createSuggestionCard(item));
+        });
+
+        card.appendChild(divider);
+        card.appendChild(missingTitle);
+        card.appendChild(suggestionList);
+      }
+
+      container.appendChild(card);
+    }
+
+    function renderTransformationResults() {
+      const container = document.getElementById("transformationLooks");
+      container.innerHTML = "";
+
+      if (transformationResults.length === 0) {
+        container.innerHTML = `<div class="empty">Generate recommendations to see three from-scratch style transformations.</div>`;
+        return;
+      }
+
+      transformationResults.forEach((look, index) => {
+        const card = document.createElement("div");
+        card.className = "transformation-card";
+
+        const header = document.createElement("div");
+        header.className = "transformation-header";
+
+        const headLeft = document.createElement("div");
+        const title = document.createElement("h3");
+        title.innerText = look.title;
+
+        const desc = document.createElement("div");
+        desc.className = "muted";
+        desc.innerText = look.description;
+
+        headLeft.appendChild(title);
+        headLeft.appendChild(desc);
+
+        const headRight = document.createElement("div");
+        headRight.className = "score-row";
+        headRight.innerHTML = `
+          <span class="score-chip" style="background:#f0ece7;color:#222;">Total: ${look.scores.total}%</span>
+        `;
+
+        header.appendChild(headLeft);
+        header.appendChild(headRight);
+
+        const grid = document.createElement("div");
+        grid.className = "outfit-grid";
+
+        Object.entries(look.items).forEach(([key, item]) => {
+          if (item) grid.appendChild(createLookItemCard(item, titleCase(key)));
+        });
+
+        const explanation = document.createElement("div");
+        explanation.className = "small";
+        explanation.style.marginTop = "14px";
+        explanation.innerText = look.explanation;
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const tryOnBtn = document.createElement("button");
+        tryOnBtn.innerText = "Try On Full Look";
+        tryOnBtn.onclick = function() {
+          setPreview(look, look.title, look.description);
         };
 
-        card.appendChild(title);
-        card.appendChild(text);
-        card.appendChild(button);
+        const regenBtn = document.createElement("button");
+        regenBtn.className = "soft-btn";
+        regenBtn.innerText = "Regenerate";
+        regenBtn.onclick = function() {
+          regenerateTransformation(index);
+        };
+
+        const saveBtn = document.createElement("button");
+        saveBtn.className = "secondary";
+        saveBtn.innerText = "Save Look";
+        saveBtn.onclick = function() {
+          saveLook(look, look.title);
+        };
+
+        actions.appendChild(tryOnBtn);
+        actions.appendChild(regenBtn);
+        actions.appendChild(saveBtn);
+
+        const divider = document.createElement("div");
+        divider.className = "divider";
+
+        const buyTitle = document.createElement("h4");
+        buyTitle.innerText = "Buy this look item by item";
+
+        const buyGrid = document.createElement("div");
+        buyGrid.className = "suggestion-list";
+
+        Object.values(look.items).filter(Boolean).forEach(item => {
+          buyGrid.appendChild(createSuggestionCard(item));
+        });
+
+        card.appendChild(header);
+        card.appendChild(grid);
+        card.appendChild(explanation);
+        card.appendChild(actions);
+        card.appendChild(divider);
+        card.appendChild(buyTitle);
+        card.appendChild(buyGrid);
 
         container.appendChild(card);
       });
     }
 
-    function generateModelPrompt(index) {
-      let variation = currentVariations[index];
-      let styleGoal = document.getElementById("styleGoal").value;
-      let occasion = document.getElementById("occasion").value;
-
-      let items = [];
-
-      Object.keys(variation.items).forEach(function(key) {
-        let item = variation.items[key];
-
-        if (item) {
-          items.push(item.name);
-        }
-      });
-
-      let prompt =
-        "Create a full-body fashion illustration of a clean cartoon model wearing: " +
-        items.join(", ") +
-        ". The outfit should look " + styleGoal +
-        " and suitable for " + occasion +
-        ". Use a neutral studio background, realistic outfit proportions, clean lighting, and make the clothes clearly visible.";
-
-      alert(prompt);
+    function setPreview(look, title, subtitle) {
+      previewLook = look;
+      document.getElementById("previewTitle").innerText = title;
+      document.getElementById("previewSubtitle").innerText = subtitle;
+      renderPreview();
     }
 
-    function saveLook(index) {
-      let variation = currentVariations[index];
-
-      let saved = {
-        date: new Date().toLocaleString(),
-        personality: variation.personality,
-        score: variation.scores.totalScore,
-        items: variation.items
-      };
-
-      savedLooks.push(saved);
-      saveSavedLooks();
-      showSavedLooks();
-
-      alert("Look saved.");
+    function colorHex(color) {
+      return colorHexMap[color] || "#c5beb5";
     }
 
-    function showSavedLooks() {
-      let container = document.getElementById("savedLooks");
-      container.innerHTML = "";
+    function renderPreview() {
+      const panel = document.getElementById("previewPanel");
+      panel.innerHTML = "";
 
-      if (savedLooks.length === 0) {
-        container.innerHTML = "<p class='small'>No saved looks yet.</p>";
+      if (!previewLook) {
+        panel.innerHTML = `<div class="empty" style="background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.15); color:#ddd;">No outfit preview yet.</div>`;
         return;
       }
 
-      savedLooks.forEach(function(look, index) {
-        let div = document.createElement("div");
-        div.className = "saved-look";
+      const items = previewLook.items || {};
 
-        let text = "Saved: " + look.date + "\n";
-        text += "Type: " + capitalize(look.personality) + "\n";
-        text += "Score: " + look.score + "%\n\n";
+      const shirtColor = colorHex(items.shirt ? items.shirt.color : "recommended");
+      const pantsColor = colorHex(items.pants ? items.pants.color : "recommended");
+      const shoesColor = colorHex(items.shoes ? items.shoes.color : "recommended");
+      const outerwearColor = colorHex(items.outerwear ? items.outerwear.color : "recommended");
+      const hatColor = colorHex(items.hat ? items.hat.color : "recommended");
 
-        Object.keys(look.items).forEach(function(key) {
-          let item = look.items[key];
+      const svg = `
+        <svg width="100%" viewBox="0 0 260 420" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="260" height="420" rx="24" fill="rgba(255,255,255,0.04)"/>
+          <circle cx="130" cy="58" r="28" fill="#e7c6a9"/>
+          <rect x="105" y="88" width="50" height="36" rx="12" fill="#e7c6a9"/>
+          ${items.hat ? `<ellipse cx="130" cy="36" rx="34" ry="10" fill="${hatColor}"/><rect x="104" y="18" width="52" height="18" rx="9" fill="${hatColor}"/>` : ""}
 
-          if (item) {
-            text += capitalize(key) + ": " + item.name + "\n";
-          }
-        });
+          <rect x="80" y="118" width="100" height="110" rx="18" fill="${shirtColor}"/>
+          ${items.outerwear ? `<rect x="70" y="116" width="120" height="118" rx="20" fill="${outerwearColor}" opacity="0.82"/>` : ""}
 
-        let pre = document.createElement("div");
-        pre.className = "small";
-        pre.innerText = text;
+          <rect x="55" y="126" width="22" height="92" rx="10" fill="${items.outerwear ? outerwearColor : shirtColor}" opacity="0.95"/>
+          <rect x="183" y="126" width="22" height="92" rx="10" fill="${items.outerwear ? outerwearColor : shirtColor}" opacity="0.95"/>
 
-        let removeButton = document.createElement("button");
-        removeButton.className = "danger";
-        removeButton.innerText = "Remove";
+          <rect x="88" y="226" width="38" height="120" rx="12" fill="${pantsColor}"/>
+          <rect x="134" y="226" width="38" height="120" rx="12" fill="${pantsColor}"/>
 
-        removeButton.onclick = function() {
-          savedLooks.splice(index, 1);
-          saveSavedLooks();
-          showSavedLooks();
-        };
+          <rect x="80" y="344" width="52" height="18" rx="8" fill="${shoesColor}"/>
+          <rect x="128" y="344" width="52" height="18" rx="8" fill="${shoesColor}"/>
+        </svg>
+      `;
 
-        div.appendChild(pre);
-        div.appendChild(removeButton);
-        container.appendChild(div);
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = svg;
+      panel.appendChild(wrapper);
+
+      const itemList = document.createElement("div");
+      itemList.className = "small";
+      itemList.style.color = "#e7e7e7";
+      itemList.style.marginTop = "10px";
+
+      let text = "";
+      Object.entries(items).forEach(([key, item]) => {
+        if (item) {
+          text += `${titleCase(key)}: ${item.name}\n`;
+        }
       });
+
+      itemList.innerText = text.trim();
+      panel.appendChild(itemList);
+    }
+
+    function saveLook(look, label) {
+      savedLooks.unshift({
+        id: randomId("saved"),
+        savedAt: new Date().toLocaleString(),
+        label,
+        look
+      });
+
+      saveSavedLooks();
+      showSavedLooks();
+      alert("Look saved.");
+    }
+
+    function removeSavedLook(index) {
+      savedLooks.splice(index, 1);
+      saveSavedLooks();
+      showSavedLooks();
     }
 
     function clearSavedLooks() {
@@ -1304,8 +1541,68 @@
       showSavedLooks();
     }
 
-    function capitalize(text) {
-      return text.charAt(0).toUpperCase() + text.slice(1);
+    function showSavedLooks() {
+      const container = document.getElementById("savedLooks");
+      container.innerHTML = "";
+
+      if (savedLooks.length === 0) {
+        container.innerHTML = `<div class="empty">No saved looks yet.</div>`;
+        return;
+      }
+
+      savedLooks.forEach((entry, index) => {
+        const card = document.createElement("div");
+        card.className = "saved-card";
+
+        const title = document.createElement("div");
+        title.className = "item-title";
+        title.innerText = entry.label;
+
+        const meta = document.createElement("div");
+        meta.className = "small";
+        meta.innerText = `Saved: ${entry.savedAt}`;
+
+        const itemsText = document.createElement("div");
+        itemsText.className = "small";
+        let text = "";
+        Object.entries(entry.look.items).forEach(([key, item]) => {
+          if (item) text += `${titleCase(key)}: ${item.name}\n`;
+        });
+        itemsText.innerText = text.trim();
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const tryOnBtn = document.createElement("button");
+        tryOnBtn.innerText = "Try On Again";
+        tryOnBtn.onclick = function() {
+          setPreview(entry.look, entry.label, "Saved look preview");
+        };
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "danger";
+        removeBtn.innerText = "Remove";
+        removeBtn.onclick = function() {
+          removeSavedLook(index);
+        };
+
+        actions.appendChild(tryOnBtn);
+        actions.appendChild(removeBtn);
+
+        card.appendChild(title);
+        card.appendChild(meta);
+        card.appendChild(itemsText);
+        card.appendChild(actions);
+
+        container.appendChild(card);
+      });
+    }
+
+    function generateAllRecommendations() {
+      generateBestFromWardrobe();
+      generateTransformations();
+      renderWardrobeRecommendation();
+      renderTransformationResults();
     }
   </script>
 </body>
